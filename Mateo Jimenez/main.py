@@ -37,3 +37,4 @@ if cpu >= 90:
     print("Puede recibir", procesos_adicionales, "procesos adicionales antes de colapsar.")
 else:
     print("El servidor aun tiene capacidad disponible.")
+    
