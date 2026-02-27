@@ -43,3 +43,59 @@ def es_palindromo(cadena):
     return cadena == cadena[::-1]  # Comparar la cadena con su reverso          
 print(es_palindromo("Anita lava la tina"))  # True
 print(es_palindromo("Hola"))  # False   
+
+# Ejercicio 6: Encontrar el Máximo en un Array
+# Descripción: Escribe una función que tome un array de números y devuelva el número máximo.
+
+# Ejercicio 7: Invertir una Cadena
+# Descripción: Escribe una función que tome una cadena de texto y devuelva la cadena invertida.
+
+# Ejercicio 8: Contar Vocales en una Cadena
+# Descripción: Escribe una función que tome una cadena de texto y cuente el número de vocales (a, e, i, o, u).
+
+# Ejercicio 9: Encontrar Números Primos
+# Descripción: Escribe una función que encuentre todos los números primos hasta un número dado.
+
+# Ejercicio 10: Generar una Secuencia Fibonacci
+# Descripción: Escribe una función que genere una secuencia Fibonacci hasta un número dado.
+
+#Strings
+
+comillasSimples = 'Simples'
+comillasDobles = "Dobles"
+comillasTriples = '''Triples'''
+
+print(comillasSimples)
+print(comillasDobles)
+print(comillasTriples)
+
+#Números
+a=1
+b=3.14
+c=5+2j
+
+print(a)
+print(b)
+print(c)
+
+#Listas
+lista={1,2,3,4,5}
+print(lista)
+
+#tupla
+tupla=("a","b","c")
+print(tupla)
+
+#Diccionario
+diccionario={
+    "Nombre":"Ari",
+    "Edad":34,
+    "Ciudad":"México"
+}
+print(diccionario)
+
+#Booleanos
+booleanoVerdadero=True
+booleanoFalso=False
+print(booleanoVerdadero)
+print(booleanoFalso)
