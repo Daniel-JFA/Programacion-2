@@ -1,5 +1,7 @@
 import os
 
+
+
 IDs = input("Ingrese ID del servidor: ")
 Carga = float(input("Ingrese carga de CPU: "))
 Temp = float(input("Ingrese Temperatura del Rack en celsius: "))
@@ -9,6 +11,8 @@ os.system("cls")
 if Ce > 400:
     exceso = Ce - 400
     print("El exceso de energia que se está consumiendo es de:",exceso)
+else:
+   print("El consumo de energia es adecuado")
     
 if Temp > 75 and Carga >80:
     print("[PELIGRO CRÍTICO]: Apagado de emergencia inminente")
