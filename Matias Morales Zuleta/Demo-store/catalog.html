@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catálogo - Wudhi Marketplace</title>
+    <link rel="stylesheet" href="catalog.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>Wudhi</h1>
+            </div>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link">Inicio</a>
+                <a href="#" class="nav-link active">Productos</a>
+                <a href="#" class="nav-link">Mis Órdenes</a>
+                <a href="#" class="nav-link">Perfil</a>
+            </nav>
+            <div class="header-actions">
+                <div class="cart-icon">
+                    <span class="cart-count">3</span>
+                    🛒
+                </div>
+                <div class="user-menu">
+                    <span class="user-name">Juan Pérez</span>
+                    <button class="logout-btn">Salir</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Search and Filters -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="search-bar">
+                    <input
+                        type="text"
+                        id="search-input"
+                        placeholder="Buscar productos, servicios, vendedores..."
+                        class="search-input"
+                    >
+                    <button class="search-btn">🔍</button>
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn active" data-filter="all">Todos</button>
+                    <button class="filter-btn" data-filter="productos">Productos</button>
+                    <button class="filter-btn" data-filter="servicios">Servicios</button>
+                    <button class="filter-btn" data-filter="digital">Digital</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Categories -->
+        <section class="categories-section">
+            <h2>Categorías</h2>
+            <div class="categories-grid">
+                <div class="category-card" data-category="electronics">
+                    <div class="category-icon">💻</div>
+                    <h3>Electrónica</h3>
+                    <p>Computadores, celulares, accesorios</p>
+                </div>
+                <div class="category-card" data-category="books">
+                    <div class="category-icon">📚</div>
+                    <h3>Libros</h3>
+                    <p>Textos universitarios, novelas, material académico</p>
+                </div>
+                <div class="category-card" data-category="services">
+                    <div class="category-icon">🎓</div>
+                    <h3>Servicios</h3>
+                    <p>Tutorías, diseño, programación</p>
+                </div>
+                <div class="category-card" data-category="housing">
+                    <div class="category-icon">🏠</div>
+                    <h3>Vivienda</h3>
+                    <p>Habitaciones, apartamentos para estudiantes</p>
+                </div>
+                <div class="category-card" data-category="transport">
+                    <div class="category-icon">🚗</div>
+                    <h3>Transporte</h3>
+                    <p>Bicicletas, scooters, servicios de transporte</p>
+                </div>
+                <div class="category-card" data-category="sports">
+                    <div class="category-icon">⚽</div>
+                    <h3>Deportes</h3>
+                    <p>Equipos, ropa deportiva, accesorios</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Products Grid -->
+        <section class="products-section">
+            <div class="products-header">
+                <h2>Productos Destacados</h2>
+                <div class="sort-options">
+                    <select id="sort-select" class="sort-select">
+                        <option value="relevance">Más relevantes</option>
+                        <option value="price-low">Precio: menor a mayor</option>
+                        <option value="price-high">Precio: mayor a menor</option>
+                        <option value="rating">Mejor calificación</option>
+                        <option value="newest">Más recientes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="products-grid" id="products-grid">
+                <!-- Productos se cargarán dinámicamente -->
+            </div>
+
+            <!-- Load More Button -->
+            <div class="load-more-container">
+                <button class="load-more-btn" id="load-more-btn">
+                    Cargar Más Productos
+                </button>
+            </div>
+        </section>
+
+        <!-- Product Detail Modal -->
+        <div id="product-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Detalle del Producto</h3>
+                    <button class="close-modal" id="close-modal">&times;</button>
+                </div>
+                <div class="modal-body" id="modal-body">
+                    <!-- Contenido del modal se carga dinámicamente -->
+                </div>
+                <div class="modal-actions">
+                    <button class="btn-secondary" id="modal-close-btn">Cerrar</button>
+                    <button class="btn-primary" id="modal-add-cart">Agregar al Carrito</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Wudhi - Marketplace Universitario</p>
+            <div class="footer-links">
+                <a href="#">Términos</a>
+                <a href="#">Privacidad</a>
+                <a href="#">Ayuda</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="catalog.js"></script>
+</body>
+</html>

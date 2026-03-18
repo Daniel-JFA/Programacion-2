@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil - Wudhi</title>
+    <link rel="stylesheet" href="profile.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-graduation-cap"></i> Wudhi</h1>
+            </div>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="catalog.html" class="nav-link"><i class="fas fa-store"></i> Catálogo</a>
+                <a href="profile.html" class="nav-link active"><i class="fas fa-user"></i> Perfil</a>
+                <a href="cart.html" class="nav-link"><i class="fas fa-shopping-cart"></i> Carrito</a>
+            </nav>
+            <div class="user-menu">
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Salir
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Profile Header -->
+        <div class="profile-header">
+            <div class="profile-avatar">
+                <i class="fas fa-user-circle"></i>
+            </div>
+            <div class="profile-info">
+                <h1 id="userName">Juan Pérez</h1>
+                <p id="userEmail">juan.perez@universidad.edu</p>
+                <div class="user-stats">
+                    <span class="stat"><i class="fas fa-shopping-bag"></i> 12 órdenes</span>
+                    <span class="stat"><i class="fas fa-star"></i> 4.8 rating</span>
+                    <span class="stat"><i class="fas fa-dollar-sign"></i> $2.5M gastados</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('personal')">Información Personal</button>
+            <button class="tab-btn" onclick="showTab('orders')">Mis Órdenes</button>
+            <button class="tab-btn" onclick="showTab('products')" id="productsTab">Mis Productos</button>
+            <button class="tab-btn" onclick="showTab('security')">Seguridad</button>
+        </div>
+
+        <!-- Personal Information Tab -->
+        <div id="personalTab" class="tab-content active">
+            <div class="form-section">
+                <h2><i class="fas fa-user-edit"></i> Información Personal</h2>
+                <form id="personalForm" class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="firstName">Nombre</label>
+                            <input type="text" id="firstName" name="firstName" value="Juan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="lastName">Apellido</label>
+                            <input type="text" id="lastName" name="lastName" value="Pérez" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Correo Electrónico</label>
+                        <input type="email" id="email" name="email" value="juan.perez@universidad.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Teléfono</label>
+                        <input type="tel" id="phone" name="phone" value="+57 300 123 4567" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="university">Universidad</label>
+                        <input type="text" id="university" name="university" value="Universidad Nacional" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="studentId">ID Estudiantil</label>
+                        <input type="text" id="studentId" name="studentId" value="201910001" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Guardar Cambios
+                    </button>
+                </form>
+            </div>
+
+            <!-- Address Section -->
+            <div class="form-section">
+                <h2><i class="fas fa-map-marker-alt"></i> Dirección de Envío</h2>
+                <form id="addressForm" class="profile-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="country">País</label>
+                            <select id="country" name="country" required>
+                                <option value="Colombia">Colombia</option>
+                                <option value="México">México</option>
+                                <option value="Argentina">Argentina</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Ciudad</label>
+                            <input type="text" id="city" name="city" value="Bogotá" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="address">Dirección</label>
+                        <input type="text" id="address" name="address" value="Carrera 15 #45-67" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="postalCode">Código Postal</label>
+                        <input type="text" id="postalCode" name="postalCode" value="110111" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-save"></i> Actualizar Dirección
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Orders Tab -->
+        <div id="ordersTab" class="tab-content">
+            <div class="orders-section">
+                <h2><i class="fas fa-shopping-bag"></i> Mis Órdenes</h2>
+                <div class="orders-list" id="ordersList">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Tab (for sellers) -->
+        <div id="productsTab" class="tab-content">
+            <div class="products-section">
+                <div class="section-header">
+                    <h2><i class="fas fa-box"></i> Mis Productos</h2>
+                    <button class="btn-primary" onclick="showAddProductModal()">
+                        <i class="fas fa-plus"></i> Agregar Producto
+                    </button>
+                </div>
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Tab -->
+        <div id="securityTab" class="tab-content">
+            <div class="form-section">
+                <h2><i class="fas fa-shield-alt"></i> Cambiar Contraseña</h2>
+                <form id="passwordForm" class="profile-form">
+                    <div class="form-group">
+                        <label for="currentPassword">Contraseña Actual</label>
+                        <input type="password" id="currentPassword" name="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">Nueva Contraseña</label>
+                        <input type="password" id="newPassword" name="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirmar Nueva Contraseña</label>
+                        <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn-primary">
+                        <i class="fas fa-key"></i> Cambiar Contraseña
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-plus"></i> Agregar Nuevo Producto</h3>
+                <button class="close-btn" onclick="closeAddProductModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="addProductForm" class="modal-form">
+                <div class="form-group">
+                    <label for="productName">Nombre del Producto</label>
+                    <input type="text" id="productName" name="productName" required>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Descripción</label>
+                    <textarea id="productDescription" name="productDescription" rows="3" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Precio</label>
+                        <input type="number" id="productPrice" name="productPrice" min="0" step="1000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stock</label>
+                        <input type="number" id="productStock" name="productStock" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productCategory">Categoría</label>
+                    <select id="productCategory" name="productCategory" required>
+                        <option value="">Seleccionar categoría</option>
+                        <option value="electronics">Electrónica</option>
+                        <option value="books">Libros</option>
+                        <option value="services">Servicios</option>
+                        <option value="housing">Vivienda</option>
+                        <option value="transport">Transporte</option>
+                        <option value="sports">Deportes</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productType">Tipo</label>
+                    <select id="productType" name="productType" required>
+                        <option value="productos">Producto Físico</option>
+                        <option value="servicios">Servicio</option>
+                        <option value="digital">Producto Digital</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-save"></i> Crear Producto
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="profile.js"></script>
+</body>
+</html>

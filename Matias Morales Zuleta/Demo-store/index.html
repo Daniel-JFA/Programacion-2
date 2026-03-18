@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wudhi - Marketplace Universitario</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header con Logo -->
+        <header class="header">
+            <div class="logo">
+                <h1>Wudhi</h1>
+                <p class="tagline">Marketplace Universitario</p>
+            </div>
+        </header>
+
+        <!-- Contenedor Principal -->
+        <main class="main-container">
+            <!-- Panel de Bienvenida -->
+            <div class="welcome-panel">
+                <h2>Bienvenido a Wudhi</h2>
+                <p>Una plataforma para comprar y vender productos y servicios dentro de tu comunidad universitaria</p>
+            </div>
+
+            <!-- Contenedor de Formularios -->
+            <div class="forms-wrapper">
+                <!-- Formulario de Registro -->
+                <div id="register-form" class="form-container active">
+                    <h3>Crear Cuenta</h3>
+                    
+                    <!-- ID Campo -->
+                    <div class="form-group">
+                        <label for="register-id">ID Universitario</label>
+                        <input 
+                            type="text" 
+                            id="register-id" 
+                            placeholder="Ingresa tu ID universitario"
+                            maxlength="20"
+                        >
+                        <div class="field-status" id="id-status"></div>
+                        <p class="field-hint">Tu identificador único en el sistema</p>
+                    </div>
+
+                    <!-- Name Campo -->
+                    <div class="form-group hidden">
+                        <label for="register-name">Nombre Completo</label>
+                        <input 
+                            type="text" 
+                            id="register-name" 
+                            placeholder="Ingresa tu nombre completo"
+                            maxlength="50"
+                            disabled
+                        >
+                        <div class="field-status" id="name-status"></div>
+                        <p class="field-hint">Tu nombre será visible para otros usuarios</p>
+                    </div>
+
+                    <!-- Email Campo -->
+                    <div class="form-group hidden">
+                        <label for="register-email">Correo Electrónico</label>
+                        <input 
+                            type="email" 
+                            id="register-email" 
+                            placeholder="ejemplo@universidad.edu"
+                            disabled
+                        >
+                        <div class="field-status" id="email-status"></div>
+                        <p class="field-hint">Usa tu correo universitario preferentemente</p>
+                    </div>
+
+                    <!-- Password Campo -->
+                    <div class="form-group hidden">
+                        <label for="register-password">Contraseña</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="register-password" 
+                                placeholder="Mínimo 8 caracteres"
+                                disabled
+                            >
+                            <button type="button" class="toggle-password" id="toggle-password-register">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="field-status" id="password-status"></div>
+                        <div class="password-requirements">
+                            <p id="req-length">✗ Mínimo 8 caracteres</p>
+                            <p id="req-uppercase">✗ Una letra mayúscula</p>
+                            <p id="req-number">✗ Un número</p>
+                        </div>
+                    </div>
+
+                    <!-- Role Campo -->
+                    <div class="form-group hidden">
+                        <label for="register-role">Tipo de Usuario</label>
+                        <div class="role-selector">
+                            <div class="role-option">
+                                <input 
+                                    type="radio" 
+                                    id="role-buyer" 
+                                    name="role" 
+                                    value="comprador"
+                                    disabled
+                                >
+                                <label for="role-buyer" class="role-label">
+                                    <span class="role-icon">🛍️</span>
+                                    <span>Comprador</span>
+                                </label>
+                            </div>
+                            <div class="role-option">
+                                <input 
+                                    type="radio" 
+                                    id="role-seller" 
+                                    name="role" 
+                                    value="vendedor"
+                                    disabled
+                                >
+                                <label for="role-seller" class="role-label">
+                                    <span class="role-icon">📦</span>
+                                    <span>Vendedor</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="field-status" id="role-status"></div>
+                        <p class="field-hint">Puedes cambiar esto más tarde en tu perfil</p>
+                    </div>
+
+                    <!-- CreatedAt (auto-generated) -->
+                    <div class="form-group hidden">
+                        <label>Cuenta Creada</label>
+                        <div class="created-at-display" id="createdAt-display"></div>
+                        <p class="field-hint">Se genera automáticamente al completar el registro</p>
+                    </div>
+
+                    <!-- Botones de Acción -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" id="next-field-btn">Siguiente</button>
+                        <button type="button" class="btn btn-secondary" id="submit-register" style="display: none;">Crear Cuenta</button>
+                    </div>
+
+                    <!-- Toggle a Login -->
+                    <div class="form-toggle">
+                        <p>¿Ya tienes cuenta? 
+                            <button type="button" id="toggle-to-login" class="link-btn">Inicia sesión</button>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Formulario de Login -->
+                <div id="login-form" class="form-container hidden">
+                    <h3>Iniciar Sesión</h3>
+
+                    <!-- Email Login -->
+                    <div class="form-group">
+                        <label for="login-email">Correo o ID Universitario</label>
+                        <input 
+                            type="text" 
+                            id="login-email" 
+                            placeholder="ejemplo@universidad.edu o ID"
+                        >
+                        <div class="field-status" id="login-email-status"></div>
+                    </div>
+
+                    <!-- Password Login -->
+                    <div class="form-group">
+                        <label for="login-password">Contraseña</label>
+                        <div class="password-input-wrapper">
+                            <input 
+                                type="password" 
+                                id="login-password" 
+                                placeholder="Ingresa tu contraseña"
+                            >
+                            <button type="button" class="toggle-password" id="toggle-password-login">
+                                <span class="eye-icon">👁️</span>
+                            </button>
+                        </div>
+                        <div class="field-status" id="login-password-status"></div>
+                    </div>
+
+                    <!-- Opciones de Login -->
+                    <div class="login-options">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="remember-me">
+                            <span>Recuérdame</span>
+                        </label>
+                        <button type="button" id="forgot-password-btn" class="link-btn">¿Olvidaste tu contraseña?</button>
+                    </div>
+
+                    <!-- Botón Submit -->
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-primary" id="submit-login">Iniciar Sesión</button>
+                    </div>
+
+                    <!-- Toggle a Registro -->
+                    <div class="form-toggle">
+                        <p>¿No tienes cuenta? 
+                            <button type="button" id="toggle-to-register" class="link-btn">Regístrate aquí</button>
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Modal de Onboarding para Vendedores -->
+                <div id="seller-onboarding-modal" class="modal hidden">
+                    <div class="modal-content seller-onboarding">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-store"></i> Configura tu Perfil de Vendedor</h3>
+                            <button type="button" class="close-modal" id="close-seller-onboarding">&times;</button>
+                        </div>
+
+                        <!-- Paso 1: Selección de Categoría -->
+                        <div id="step-category" class="onboarding-step active">
+                            <div class="step-header">
+                                <div class="step-indicator">
+                                    <span class="step-number">1</span>
+                                    <span class="step-title">Elige tu Categoría</span>
+                                </div>
+                                <div class="step-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 25%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="categories-grid">
+                                <div class="category-card" data-category="alimentos">
+                                    <div class="category-icon">🍽️</div>
+                                    <h4>Alimentos</h4>
+                                    <p>Postres, almuerzos, dulcería y más</p>
+                                    <div class="category-subtypes">
+                                        <span class="subtype-tag">Postres</span>
+                                        <span class="subtype-tag">Almuerzos</span>
+                                        <span class="subtype-tag">Dulcería</span>
+                                    </div>
+                                </div>
+
+                                <div class="category-card" data-category="servicios-academicos">
+                                    <div class="category-icon">🎓</div>
+                                    <h4>Servicios Académicos</h4>
+                                    <p>Tutorías, asesorías y ayuda académica</p>
+                                    <div class="category-subtypes">
+                                        <span class="subtype-tag">Tutorías</span>
+                                        <span class="subtype-tag">Asesorías</span>
+                                        <span class="subtype-tag">Ayuda</span>
+                                    </div>
+                                </div>
+
+                                <div class="category-card" data-category="productos-varios">
+                                    <div class="category-icon">📦</div>
+                                    <h4>Productos Varios</h4>
+                                    <p>Artículos diversos para estudiantes</p>
+                                    <div class="category-subtypes">
+                                        <span class="subtype-tag">Útiles</span>
+                                        <span class="subtype-tag">Accesorios</span>
+                                        <span class="subtype-tag">Otros</span>
+                                    </div>
+                                </div>
+
+                                <div class="category-card" data-category="venta-independiente">
+                                    <div class="category-icon">🏪</div>
+                                    <h4>Venta Independiente</h4>
+                                    <p>Productos y servicios personalizados</p>
+                                    <div class="category-subtypes">
+                                        <span class="subtype-tag">Personalizado</span>
+                                        <span class="subtype-tag">Único</span>
+                                        <span class="subtype-tag">Especial</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-secondary" id="skip-onboarding">Omitir por ahora</button>
+                                <button type="button" class="btn btn-primary" id="next-to-products" disabled>Siguiente</button>
+                            </div>
+                        </div>
+
+                        <!-- Paso 2: Crear Productos/Servicios -->
+                        <div id="step-products" class="onboarding-step">
+                            <div class="step-header">
+                                <div class="step-indicator">
+                                    <span class="step-number">2</span>
+                                    <span class="step-title" id="step-title">Agrega tus Productos</span>
+                                </div>
+                                <div class="step-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 50%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="products-section">
+                                <div class="products-header">
+                                    <h4>Tus Productos/Servicios</h4>
+                                    <button type="button" class="btn btn-primary btn-sm" id="add-product-btn">
+                                        <i class="fas fa-plus"></i> Agregar Producto
+                                    </button>
+                                </div>
+
+                                <div id="products-list" class="products-list">
+                                    <!-- Los productos se agregarán aquí dinámicamente -->
+                                </div>
+
+                                <div class="no-products-message">
+                                    <div class="empty-icon">📦</div>
+                                    <p>Aún no has agregado ningún producto</p>
+                                    <p class="hint">Haz clic en "Agregar Producto" para comenzar</p>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-secondary" id="back-to-category">Atrás</button>
+                                <button type="button" class="btn btn-primary" id="next-to-preview" disabled>Continuar</button>
+                            </div>
+                        </div>
+
+                        <!-- Paso 3: Vista Previa y Confirmación -->
+                        <div id="step-preview" class="onboarding-step">
+                            <div class="step-header">
+                                <div class="step-indicator">
+                                    <span class="step-number">3</span>
+                                    <span class="step-title">Vista Previa</span>
+                                </div>
+                                <div class="step-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 75%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="preview-section">
+                                <h4>Así se verá tu tienda en Wudhi</h4>
+                                <div class="store-preview">
+                                    <div class="store-header">
+                                        <div class="store-avatar">
+                                            <i class="fas fa-user-circle"></i>
+                                        </div>
+                                        <div class="store-info">
+                                            <h5 id="preview-store-name">Tu Tienda</h5>
+                                            <p id="preview-store-category">Categoría seleccionada</p>
+                                            <div class="store-rating">
+                                                <i class="fas fa-star"></i>
+                                                <span>Nueva tienda</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="preview-products" class="preview-products">
+                                        <!-- Los productos en vista previa se mostrarán aquí -->
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-secondary" id="back-to-products">Atrás</button>
+                                <button type="button" class="btn btn-primary" id="finish-onboarding">¡Comenzar a Vender!</button>
+                            </div>
+                        </div>
+
+                        <!-- Paso 4: Completado -->
+                        <div id="step-complete" class="onboarding-step">
+                            <div class="step-header">
+                                <div class="step-indicator">
+                                    <span class="step-number">✓</span>
+                                    <span class="step-title">¡Listo!</span>
+                                </div>
+                                <div class="step-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="complete-section">
+                                <div class="success-icon">🎉</div>
+                                <h4>¡Tu perfil de vendedor está configurado!</h4>
+                                <p>Ahora puedes comenzar a vender en Wudhi. Tus productos estarán visibles para otros estudiantes.</p>
+
+                                <div class="next-steps">
+                                    <h5>Próximos pasos:</h5>
+                                    <ul>
+                                        <li>Ve al catálogo para ver tus productos</li>
+                                        <li>Actualiza tu perfil en la sección "Mi Perfil"</li>
+                                        <li>Revisa tus órdenes y estadísticas</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="step-actions">
+                                <button type="button" class="btn btn-primary" id="go-to-dashboard">Ir al Dashboard</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal para Agregar Producto -->
+                <div id="add-product-modal" class="modal hidden">
+                    <div class="modal-content add-product-modal">
+                        <div class="modal-header">
+                            <h3><i class="fas fa-plus"></i> Agregar Producto/Servicio</h3>
+                            <button type="button" class="close-modal" id="close-add-product">&times;</button>
+                        </div>
+
+                        <div class="modal-body">
+                            <form id="add-product-form">
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="product-name">Nombre del Producto/Servicio *</label>
+                                        <input type="text" id="product-name" placeholder="Ej: Torta de Chocolate" required>
+                                        <div class="field-hint">Sé específico y atractivo</div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product-price">Precio (COP) *</label>
+                                        <input type="number" id="product-price" placeholder="15000" min="1000" step="1000" required>
+                                        <div class="field-hint">Precio en pesos colombianos</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="product-description">Descripción *</label>
+                                    <textarea id="product-description" rows="3" placeholder="Describe tu producto o servicio detalladamente..." required></textarea>
+                                    <div class="field-hint">Incluye características, beneficios y cualquier información importante</div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="product-type">Tipo *</label>
+                                        <select id="product-type" required>
+                                            <option value="">Seleccionar tipo</option>
+                                            <option value="productos">Producto Físico</option>
+                                            <option value="servicios">Servicio</option>
+                                            <option value="digital">Producto Digital</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="product-stock">Stock/Disponibilidad *</label>
+                                        <input type="number" id="product-stock" placeholder="10" min="1" required>
+                                        <div class="field-hint">Cantidad disponible o máximo de servicios</div>
+                                    </div>
+                                </div>
+
+                                <!-- Campos específicos por categoría -->
+                                <div id="category-specific-fields">
+                                    <!-- Los campos específicos se cargarán dinámicamente -->
+                                </div>
+
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-secondary" id="cancel-add-product">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary">Agregar Producto</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal de Recuperación de Contraseña -->
+                <div id="recovery-modal" class="modal hidden">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Recuperar Contraseña</h3>
+                            <button type="button" class="close-modal" id="close-recovery">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <p>Ingresa tu correo o ID universitario para recuperar tu contraseña</p>
+                            <div class="form-group">
+                                <input 
+                                    type="text" 
+                                    id="recovery-email" 
+                                    placeholder="ejemplo@universidad.edu o ID"
+                                >
+                            </div>
+                            <div class="field-status" id="recovery-status"></div>
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn btn-primary" id="send-recovery">Enviar Instrucciones</button>
+                            <button type="button" class="btn btn-secondary" id="cancel-recovery">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>&copy; 2026 Wudhi - Marketplace Universitario. Todos los derechos reservados.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

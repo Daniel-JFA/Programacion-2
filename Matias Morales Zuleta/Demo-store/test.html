@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prueba - Onboarding Vendedores Wudhi</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .test-section {
+            background: white;
+            padding: 2rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        .test-btn {
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 0.5rem;
+            font-size: 1rem;
+        }
+        .test-btn:hover {
+            background: #4f46e5;
+        }
+        .user-info {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <h1>Wudhi - Pruebas</h1>
+                <p>Testing del sistema de vendedores</p>
+            </div>
+        </header>
+
+        <div class="test-section">
+            <h2>🧪 Pruebas del Sistema de Vendedores</h2>
+
+            <div class="user-info">
+                <h3>Usuario Actual:</h3>
+                <div id="current-user">Ninguno</div>
+            </div>
+
+            <div class="test-section">
+                <h3>1. Simular Registro de Vendedor</h3>
+                <button class="test-btn" onclick="simulateSellerRegistration()">Registrar Vendedor de Prueba</button>
+                <p>Esto simulará el registro completo y activará el onboarding</p>
+            </div>
+
+            <div class="test-section">
+                <h3>2. Ver Datos Guardados</h3>
+                <button class="test-btn" onclick="showStoredData()">Mostrar Datos en localStorage</button>
+                <p>Verifica que los datos se guarden correctamente</p>
+            </div>
+
+            <div class="test-section">
+                <h3>3. Limpiar Datos de Prueba</h3>
+                <button class="test-btn" onclick="clearTestData()">Limpiar localStorage</button>
+                <p>Elimina todos los datos de prueba</p>
+            </div>
+
+            <div class="test-section">
+                <h3>4. Ir al Sistema Real</h3>
+                <button class="test-btn" onclick="goToMainSystem()">Ir a index.html</button>
+                <p>Accede al sistema completo</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Simular registro de vendedor
+        function simulateSellerRegistration() {
+            const testUser = {
+                id: Date.now(),
+                name: "María González",
+                email: "maria.gonzalez@universidad.edu",
+                password: "TestPass123",
+                role: "vendedor",
+                phone: "+57 300 123 4567",
+                university: "Universidad Nacional",
+                studentId: "2020001",
+                address: {
+                    country: "Colombia",
+                    city: "Bogotá",
+                    street: "Carrera 15 #67-89",
+                    postalCode: "110111"
+                },
+                createdAt: new Date().toISOString(),
+                stats: {
+                    orders: 0,
+                    totalSpent: 0,
+                    rating: 0,
+                    productsSelling: 0
+                }
+            };
+
+            // Simular tienda
+            const testStore = {
+                id: Date.now() + 1,
+                sellerId: testUser.id,
+                storeName: "María Store",
+                storeSlug: "maria-store",
+                category: "servicios-academicos",
+                rating: 0,
+                createdAt: new Date().toISOString()
+            };
+
+            // Simular productos
+            const testProducts = [
+                {
+                    id: Date.now() + 2,
+                    storeId: testStore.id,
+                    sellerId: testUser.id,
+                    name: "Tutoría de Matemáticas Avanzadas",
+                    description: "Ayuda especializada en cálculo diferencial, álgebra lineal y estadística. Más de 3 años de experiencia ayudando estudiantes.",
+                    price: 25000,
+                    type: "servicios",
+                    category: "servicios-academicos",
+                    stock: 999,
+                    serviceType: "tutoria",
+                    experience: "3 años como tutora",
+                    status: "active",
+                    createdAt: new Date().toISOString()
+                },
+                {
+                    id: Date.now() + 3,
+                    storeId: testStore.id,
+                    sellerId: testUser.id,
+                    name: "Clases de Física Mecánica",
+                    description: "Explicación clara de conceptos de cinemática, dinámica y trabajo/energía. Material incluido.",
+                    price: 30000,
+                    type: "servicios",
+                    category: "servicios-academicos",
+                    stock: 999,
+                    serviceType: "clases",
+                    experience: "Estudiante de ingeniería física",
+                    status: "active",
+                    createdAt: new Date().toISOString()
+                }
+            ];
+
+            // Guardar en localStorage
+            localStorage.setItem('wudhi_user', JSON.stringify(testUser));
+            localStorage.setItem('wudhi_store', JSON.stringify(testStore));
+            localStorage.setItem('wudhi_products', JSON.stringify(testProducts));
+
+            updateCurrentUser();
+            alert('✅ Usuario vendedor creado exitosamente!\n\nDatos de prueba guardados en localStorage.');
+        }
+
+        // Mostrar datos guardados
+        function showStoredData() {
+            const user = localStorage.getItem('wudhi_user');
+            const store = localStorage.getItem('wudhi_store');
+            const products = localStorage.getItem('wudhi_products');
+
+            let message = '📊 Datos en localStorage:\n\n';
+
+            if (user) {
+                const userData = JSON.parse(user);
+                message += `👤 Usuario: ${userData.name} (${userData.role})\n`;
+                message += `📧 Email: ${userData.email}\n`;
+                message += `📱 Teléfono: ${userData.phone}\n\n`;
+            } else {
+                message += '❌ No hay usuario guardado\n\n';
+            }
+
+            if (store) {
+                const storeData = JSON.parse(store);
+                message += `🏪 Tienda: ${storeData.storeName}\n`;
+                message += `📂 Categoría: ${storeData.category}\n\n`;
+            } else {
+                message += '❌ No hay tienda guardada\n\n';
+            }
+
+            if (products) {
+                const productsData = JSON.parse(products);
+                message += `📦 Productos: ${productsData.length} productos\n`;
+                productsData.forEach((product, index) => {
+                    message += `  ${index + 1}. ${product.name} - $${product.price.toLocaleString()}\n`;
+                });
+            } else {
+                message += '❌ No hay productos guardados\n';
+            }
+
+            alert(message);
+        }
+
+        // Limpiar datos de prueba
+        function clearTestData() {
+            if (confirm('¿Estás seguro de que quieres eliminar todos los datos de localStorage?')) {
+                localStorage.clear();
+                updateCurrentUser();
+                alert('✅ Todos los datos han sido eliminados.');
+            }
+        }
+
+        // Ir al sistema principal
+        function goToMainSystem() {
+            window.location.href = 'index.html';
+        }
+
+        // Actualizar información del usuario actual
+        function updateCurrentUser() {
+            const user = localStorage.getItem('wudhi_user');
+            const currentUserDiv = document.getElementById('current-user');
+
+            if (user) {
+                const userData = JSON.parse(user);
+                currentUserDiv.innerHTML = `
+                    <strong>${userData.name}</strong><br>
+                    <span style="color: #6b7280;">${userData.email}</span><br>
+                    <span style="color: #6366f1;">Rol: ${userData.role}</span>
+                `;
+            } else {
+                currentUserDiv.innerHTML = '<span style="color: #6b7280;">Ninguno</span>';
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', updateCurrentUser);
+    </script>
+</body>
+</html>

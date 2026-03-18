@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Interactiva - John & Jane en Wudhi</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .demo-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .demo-header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .user-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .user-tab {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid transparent;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .user-tab.active {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(102, 102, 238, 0.2);
+        }
+
+        .user-tab.jane {
+            border-color: #ec4899;
+        }
+
+        .user-tab.jane.active {
+            border-color: #ec4899;
+            box-shadow: 0 15px 35px rgba(236, 72, 153, 0.2);
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .user-avatar.john {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .user-avatar.jane {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .user-info h3 {
+            margin-bottom: 0.5rem;
+            color: #1e293b;
+        }
+
+        .user-role {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .demo-content {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 102, 238, 0.3);
+        }
+
+        .action-btn.jane {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .action-btn.jane:hover {
+            box-shadow: 0 8px 20px rgba(236, 72, 153, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .action-btn.secondary:hover {
+            box-shadow: 0 8px 20px rgba(107, 114, 128, 0.3);
+        }
+
+        .demo-section {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            border-radius: 10px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+        }
+
+        .demo-section h3 {
+            margin-bottom: 1rem;
+            color: #1e293b;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-section.john h3 {
+            color: #667eea;
+        }
+
+        .demo-section.jane h3 {
+            color: #ec4899;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 0.5rem;
+        }
+
+        .status-indicator.active {
+            background: #10b981;
+        }
+
+        .status-indicator.inactive {
+            background: #6b7280;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .product-description {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .btn-small {
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.875rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+        }
+
+        .cart-section {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .cart-total {
+            border-top: 2px solid #bae6fd;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #0369a1;
+            text-align: center;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #ef4444;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        .progress-tracker {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .progress-step {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-step::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: -1;
+        }
+
+        .progress-step.completed::before {
+            background: #10b981;
+        }
+
+        .step-circle {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #e2e8f0;
+            color: #64748b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.5rem;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .progress-step.completed .step-circle {
+            background: #10b981;
+            color: white;
+        }
+
+        .progress-step.active .step-circle {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: #64748b;
+        }
+
+        .progress-step.completed .step-label,
+        .progress-step.active .step-label {
+            color: #1e293b;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <header class="demo-header">
+            <h1>🎭 Demo Interactiva</h1>
+            <h2>John (Vendedor) ↔ Jane (Compradora)</h2>
+            <p>Experiencia completa de marketplace universitario</p>
+        </header>
+
+        <!-- Selector de Usuario -->
+        <section class="user-switcher">
+            <div class="user-tab active" id="johnTab" onclick="switchUser('john')">
+                <div class="user-avatar john">J</div>
+                <div class="user-info">
+                    <h3>John Smith</h3>
+                    <p class="user-role">👨‍💼 Vendedor - Servicios Académicos</p>
+                    <div class="status-indicator active" id="johnStatus"></div>
+                    <span>En línea</span>
+                </div>
+            </div>
+
+            <div class="user-tab jane" id="janeTab" onclick="switchUser('jane')">
+                <div class="user-avatar jane">J</div>
+                <div class="user-info">
+                    <h3>Jane Doe</h3>
+                    <p class="user-role">🛍️ Compradora - Estudiante</p>
+                    <div class="status-indicator inactive" id="janeStatus"></div>
+                    <span>Desconectada</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Barra de Progreso -->
+        <div class="demo-content">
+            <div class="progress-tracker">
+                <div class="progress-step completed" id="step1">
+                    <div class="step-circle">1</div>
+                    <div class="step-label">Registro</div>
+                </div>
+                <div class="progress-step" id="step2">
+                    <div class="step-circle">2</div>
+                    <div class="step-label">Tienda</div>
+                </div>
+                <div class="progress-step" id="step3">
+                    <div class="step-circle">3</div>
+                    <div class="step-label">Productos</div>
+                </div>
+                <div class="progress-step" id="step4">
+                    <div class="step-circle">4</div>
+                    <div class="step-label">Compra</div>
+                </div>
+                <div class="progress-step" id="step5">
+                    <div class="step-circle">5</div>
+                    <div class="step-label">Pago</div>
+                </div>
+                <div class="progress-step" id="step6">
+                    <div class="step-circle">6</div>
+                    <div class="step-label">Completado</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contenido Dinámico -->
+        <div class="demo-content" id="demoContent">
+            <!-- Contenido de John -->
+            <div id="johnContent">
+                <h2>👨‍💼 Panel de John - Vendedor</h2>
+
+                <div class="demo-section john">
+                    <h3>📊 Estado de la Tienda</h3>
+                    <p><strong>Tienda:</strong> <span id="johnStoreName">No configurada</span></p>
+                    <p><strong>Categoría:</strong> <span id="johnCategory">No seleccionada</span></p>
+                    <p><strong>Productos:</strong> <span id="johnProductCount">0</span></p>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn" onclick="johnRegister()">📝 Registrarse como Vendedor</button>
+                    <button class="action-btn" onclick="johnSetupStore()">🏪 Configurar Tienda</button>
+                    <button class="action-btn" onclick="johnAddProducts()">📦 Agregar Productos</button>
+                    <button class="action-btn secondary" onclick="viewCatalog()">👀 Ver Catálogo</button>
+                </div>
+
+                <div class="demo-section john">
+                    <h3>📦 Mis Productos</h3>
+                    <div id="johnProducts" class="product-grid">
+                        <div class="product-card">
+                            <p style="text-align: center; color: #64748b; padding: 2rem;">
+                                Aún no has agregado productos.<br>
+                                Usa el botón "Agregar Productos" para comenzar.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido de Jane -->
+            <div id="janeContent" style="display: none;">
+                <h2>🛍️ Panel de Jane - Compradora</h2>
+
+                <div class="demo-section jane">
+                    <h3>🛒 Mi Carrito</h3>
+                    <div id="janeCart" class="cart-section">
+                        <div class="cart-item">
+                            <span style="color: #64748b; font-style: italic;">Tu carrito está vacío</span>
+                            <span></span>
+                        </div>
+                        <div class="cart-total" id="cartTotal">Total: $0</div>
+                    </div>
+                </div>
+
+                <div class="action-buttons">
+                    <button class="action-btn jane" onclick="janeRegister()">📝 Registrarse como Compradora</button>
+                    <button class="action-btn jane" onclick="janeBrowseCatalog()">🔍 Navegar Catálogo</button>
+                    <button class="action-btn jane" onclick="janeAddToCart()">🛒 Agregar al Carrito</button>
+                    <button class="action-btn jane" onclick="janeCheckout()">💳 Ir al Checkout</button>
+                </div>
+
+                <div class="demo-section jane">
+                    <h3>📋 Mis Órdenes</h3>
+                    <div id="janeOrders">
+                        <p style="text-align: center; color: #64748b; padding: 2rem;">
+                            Aún no has realizado ninguna compra.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Estado de la demo
+        let currentUser = 'john';
+        let demoState = {
+            john: {
+                registered: false,
+                storeSetup: false,
+                products: []
+            },
+            jane: {
+                registered: false,
+                cart: [],
+                orders: []
+            }
+        };
+
+        // Productos de ejemplo de John
+        const johnSampleProducts = [
+            {
+                id: 1,
+                name: "Tutoría de Cálculo Diferencial",
+                description: "Sesiones personalizadas de cálculo diferencial e integral. Ayuda con límites, derivadas, integrales definidas e indefinidas.",
+                price: 25000,
+                category: "tutoria",
+                experience: "2 años como tutor",
+                modality: "virtual",
+                duration: "1 hora"
+            },
+            {
+                id: 2,
+                name: "Clases de Álgebra Lineal",
+                description: "Explicación completa de matrices, vectores, espacios vectoriales, determinantes y sistemas de ecuaciones.",
+                price: 30000,
+                category: "clases",
+                experience: "Profesor auxiliar",
+                modality: "presencial",
+                duration: "2 horas"
+            },
+            {
+                id: 3,
+                name: "Preparación para Examen Final",
+                description: "Sesiones intensivas de preparación para exámenes finales. Repaso completo y ejercicios prácticos.",
+                price: 45000,
+                category: "asesoria",
+                experience: "Especialista en exámenes",
+                modality: "ambas",
+                duration: "Sesión completa"
+            }
+        ];
+
+        // Funciones de utilidad
+        function switchUser(user) {
+            currentUser = user;
+
+            // Actualizar tabs
+            document.getElementById('johnTab').classList.toggle('active', user === 'john');
+            document.getElementById('janeTab').classList.toggle('active', user === 'jane');
+
+            // Actualizar contenido
+            document.getElementById('johnContent').style.display = user === 'john' ? 'block' : 'none';
+            document.getElementById('janeContent').style.display = user === 'jane' ? 'block' : 'none';
+
+            // Actualizar estados
+            updateUI();
+        }
+
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function updateProgress(step) {
+            for (let i = 1; i <= 6; i++) {
+                const stepElement = document.getElementById(`step${i}`);
+                stepElement.classList.remove('completed', 'active');
+
+                if (i < step) {
+                    stepElement.classList.add('completed');
+                } else if (i === step) {
+                    stepElement.classList.add('active');
+                }
+            }
+        }
+
+        function updateUI() {
+            // Actualizar estado de John
+            document.getElementById('johnStoreName').textContent =
+                demoState.john.storeSetup ? 'MathMaster Academy' : 'No configurada';
+            document.getElementById('johnCategory').textContent =
+                demoState.john.storeSetup ? 'Servicios Académicos' : 'No seleccionada';
+            document.getElementById('johnProductCount').textContent = demoState.john.products.length;
+
+            // Actualizar productos de John
+            renderJohnProducts();
+
+            // Actualizar carrito de Jane
+            renderJaneCart();
+
+            // Actualizar órdenes de Jane
+            renderJaneOrders();
+
+            // Actualizar indicadores de estado
+            document.getElementById('johnStatus').className =
+                `status-indicator ${demoState.john.registered ? 'active' : 'inactive'}`;
+            document.getElementById('janeStatus').className =
+                `status-indicator ${demoState.jane.registered ? 'active' : 'inactive'}`;
+        }
+
+        // Funciones de John
+        function johnRegister() {
+            if (demoState.john.registered) {
+                showNotification('John ya está registrado', 'error');
+                return;
+            }
+
+            demoState.john.registered = true;
+
+            // Simular guardado en localStorage
+            const johnData = {
+                id: 1,
+                name: "John Smith",
+                email: "john.smith@universidad.edu",
+                role: "vendedor",
+                university: "Universidad Nacional",
+                phone: "+57 300 123 4567",
+                createdAt: new Date().toISOString()
+            };
+            localStorage.setItem('wudhi_user', JSON.stringify(johnData));
+
+            showNotification('✅ John se registró exitosamente como vendedor');
+            updateProgress(1);
+            updateUI();
+        }
+
+        function johnSetupStore() {
+            if (!demoState.john.registered) {
+                showNotification('John debe registrarse primero', 'error');
+                return;
+            }
+
+            demoState.john.storeSetup = true;
+
+            const storeData = {
+                id: 1,
+                sellerId: 1,
+                storeName: "MathMaster Academy",
+                storeSlug: "mathmaster-academy",
+                category: "servicios-academicos",
+                rating: 0,
+                createdAt: new Date().toISOString()
+            };
+            localStorage.setItem('wudhi_store', JSON.stringify(storeData));
+
+            showNotification('✅ Tienda "MathMaster Academy" configurada');
+            updateProgress(2);
+            updateUI();
+        }
+
+        function johnAddProducts() {
+            if (!demoState.john.storeSetup) {
+                showNotification('La tienda debe estar configurada primero', 'error');
+                return;
+            }
+
+            demoState.john.products = [...johnSampleProducts];
+            localStorage.setItem('wudhi_products', JSON.stringify(demoState.john.products));
+
+            showNotification('✅ 3 productos agregados al catálogo');
+            updateProgress(3);
+            updateUI();
+        }
+
+        function renderJohnProducts() {
+            const container = document.getElementById('johnProducts');
+
+            if (demoState.john.products.length === 0) {
+                container.innerHTML = `
+                    <div class="product-card">
+                        <p style="text-align: center; color: #64748b; padding: 2rem;">
+                            Aún no has agregado productos.<br>
+                            Usa el botón "Agregar Productos" para comenzar.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = demoState.john.products.map(product => `
+                <div class="product-card">
+                    <div class="product-header">
+                        <h4>${product.name}</h4>
+                        <div class="product-price">$${product.price.toLocaleString()}</div>
+                    </div>
+                    <div class="product-description">${product.description}</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">
+                        <span>📚 ${product.category}</span>
+                        <span>⏱️ ${product.duration}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #64748b;">
+                        <span>👨‍🏫 ${product.experience}</span>
+                        <span>💻 ${product.modality}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Funciones de Jane
+        function janeRegister() {
+            if (demoState.jane.registered) {
+                showNotification('Jane ya está registrada', 'error');
+                return;
+            }
+
+            demoState.jane.registered = true;
+
+            const janeData = {
+                id: 2,
+                name: "Jane Doe",
+                email: "jane.doe@universidad.edu",
+                role: "comprador",
+                university: "Universidad Nacional",
+                phone: "+57 301 987 6543",
+                createdAt: new Date().toISOString()
+            };
+            localStorage.setItem('wudhi_user', JSON.stringify(janeData));
+
+            showNotification('✅ Jane se registró exitosamente como compradora');
+            updateProgress(1);
+            updateUI();
+        }
+
+        function janeBrowseCatalog() {
+            if (!demoState.jane.registered) {
+                showNotification('Jane debe registrarse primero', 'error');
+                return;
+            }
+
+            if (demoState.john.products.length === 0) {
+                showNotification('John aún no ha publicado productos', 'error');
+                return;
+            }
+
+            showNotification('🔍 Jane está explorando el catálogo de productos');
+            updateProgress(4);
+        }
+
+        function janeAddToCart() {
+            if (!demoState.jane.registered || demoState.john.products.length === 0) {
+                showNotification('Jane debe estar registrada y John debe tener productos', 'error');
+                return;
+            }
+
+            // Agregar productos al carrito
+            demoState.jane.cart = [
+                { ...demoState.john.products[0], quantity: 1 },
+                { ...demoState.john.products[2], quantity: 1 }
+            ];
+
+            localStorage.setItem('wudhi_cart', JSON.stringify(demoState.jane.cart));
+
+            showNotification('🛒 Jane agregó 2 productos al carrito');
+            updateUI();
+        }
+
+        function janeCheckout() {
+            if (demoState.jane.cart.length === 0) {
+                showNotification('El carrito está vacío', 'error');
+                return;
+            }
+
+            // Calcular totales
+            const subtotal = demoState.jane.cart.reduce((sum, item) => sum + item.price, 0);
+            const discount = subtotal * 0.1; // 10% descuento estudiante
+            const total = subtotal - discount;
+
+            // Crear orden
+            const order = {
+                id: Date.now(),
+                items: demoState.jane.cart,
+                subtotal: subtotal,
+                discount: discount,
+                total: total,
+                status: 'completed',
+                createdAt: new Date().toISOString()
+            };
+
+            demoState.jane.orders.push(order);
+            demoState.jane.cart = [];
+
+            localStorage.setItem('wudhi_orders', JSON.stringify(demoState.jane.orders));
+            localStorage.removeItem('wudhi_cart');
+
+            showNotification('✅ Compra completada exitosamente');
+            updateProgress(6);
+            updateUI();
+        }
+
+        function renderJaneCart() {
+            const container = document.getElementById('janeCart');
+            const totalElement = document.getElementById('cartTotal');
+
+            if (demoState.jane.cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-item">
+                        <span style="color: #64748b; font-style: italic;">Tu carrito está vacío</span>
+                        <span></span>
+                    </div>
+                    <div class="cart-total">Total: $0</div>
+                `;
+                return;
+            }
+
+            container.innerHTML = demoState.jane.cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small style="color: #64748b;">Cantidad: ${item.quantity}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: #059669;">$${item.price.toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = demoState.jane.cart.reduce((sum, item) => sum + item.price, 0);
+            container.innerHTML += `<div class="cart-total">Total: $${total.toLocaleString()}</div>`;
+        }
+
+        function renderJaneOrders() {
+            const container = document.getElementById('janeOrders');
+
+            if (demoState.jane.orders.length === 0) {
+                container.innerHTML = `
+                    <p style="text-align: center; color: #64748b; padding: 2rem;">
+                        Aún no has realizado ninguna compra.
+                    </p>
+                `;
+                return;
+            }
+
+            container.innerHTML = demoState.jane.orders.map(order => `
+                <div class="product-card">
+                    <div class="product-header">
+                        <h4>Orden #${order.id}</h4>
+                        <div style="color: #10b981; font-weight: bold;">$${order.total.toLocaleString()}</div>
+                    </div>
+                    <p><strong>Items:</strong> ${order.items.length} productos</p>
+                    <p><strong>Estado:</strong> <span style="color: #10b981;">Completada</span></p>
+                    <p><strong>Fecha:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+                </div>
+            `).join('');
+        }
+
+        function viewCatalog() {
+            window.open('catalog.html', '_blank');
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            updateUI();
+        });
+    </script>
+</body>
+</html>

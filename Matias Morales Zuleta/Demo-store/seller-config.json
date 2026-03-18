@@ -1,0 +1,481 @@
+{
+  "sellerCategories": {
+    "alimentos": {
+      "name": "Alimentos",
+      "description": "Productos alimenticios preparados o para venta",
+      "icon": "🍽️",
+      "subcategories": [
+        {
+          "id": "postres",
+          "name": "Postres",
+          "description": "Tortas, galletas, dulces y postres caseros",
+          "fields": [
+            {
+              "name": "preparationTime",
+              "label": "Tiempo de preparación",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "1-2", "label": "1-2 horas" },
+                { "value": "2-4", "label": "2-4 horas" },
+                { "value": "4-8", "label": "4-8 horas" },
+                { "value": "1dia", "label": "1 día" },
+                { "value": "2dias", "label": "2 días" }
+              ]
+            },
+            {
+              "name": "ingredients",
+              "label": "Ingredientes principales",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "Lista los ingredientes principales (harina, azúcar, frutas, etc.)"
+            },
+            {
+              "name": "dietaryInfo",
+              "label": "Información dietética",
+              "type": "checkbox-group",
+              "options": [
+                { "value": "vegetariano", "label": "Vegetariano" },
+                { "value": "vegano", "label": "Vegano" },
+                { "value": "sin-gluten", "label": "Sin gluten" },
+                { "value": "sin-lactosa", "label": "Sin lactosa" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "almuerzos",
+          "name": "Almuerzos",
+          "description": "Comidas principales y platos preparados",
+          "fields": [
+            {
+              "name": "mealType",
+              "label": "Tipo de comida",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "desayuno", "label": "Desayuno" },
+                { "value": "almuerzo", "label": "Almuerzo" },
+                { "value": "cena", "label": "Cena" },
+                { "value": "merienda", "label": "Merienda" }
+              ]
+            },
+            {
+              "name": "servings",
+              "label": "Porciones por unidad",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 20
+            },
+            {
+              "name": "preparationTime",
+              "label": "Tiempo de preparación",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "15-30", "label": "15-30 minutos" },
+                { "value": "30-60", "label": "30-60 minutos" },
+                { "value": "1-2", "label": "1-2 horas" },
+                { "value": "2-4", "label": "2-4 horas" }
+              ]
+            },
+            {
+              "name": "dietaryInfo",
+              "label": "Información dietética",
+              "type": "checkbox-group",
+              "options": [
+                { "value": "vegetariano", "label": "Vegetariano" },
+                { "value": "vegano", "label": "Vegano" },
+                { "value": "sin-gluten", "label": "Sin gluten" },
+                { "value": "sin-lactosa", "label": "Sin lactosa" },
+                { "value": "bajo-calorias", "label": "Bajo en calorías" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "dulceria",
+          "name": "Dulcería",
+          "description": "Chocolates, caramelos y golosinas artesanales",
+          "fields": [
+            {
+              "name": "sweetType",
+              "label": "Tipo de dulce",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "chocolate", "label": "Chocolate" },
+                { "value": "caramelo", "label": "Caramelo" },
+                { "value": "galleta", "label": "Galletas" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "name": "ingredients",
+              "label": "Ingredientes principales",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "Lista los ingredientes principales"
+            },
+            {
+              "name": "shelfLife",
+              "label": "Tiempo de conservación",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "1semana", "label": "1 semana" },
+                { "value": "2semanas", "label": "2 semanas" },
+                { "value": "1mes", "label": "1 mes" },
+                { "value": "mas1mes", "label": "Más de 1 mes" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "servicios-academicos": {
+      "name": "Servicios Académicos",
+      "description": "Ayuda académica, tutorías y servicios educativos",
+      "icon": "📚",
+      "subcategories": [
+        {
+          "id": "tutoria",
+          "name": "Tutoría",
+          "description": "Ayuda individualizada en materias específicas",
+          "fields": [
+            {
+              "name": "subject",
+              "label": "Materia",
+              "type": "text",
+              "required": true,
+              "placeholder": "Ej: Matemáticas, Física, Programación"
+            },
+            {
+              "name": "level",
+              "label": "Nivel académico",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "bachillerato", "label": "Bachillerato" },
+                { "value": "universitario", "label": "Universitario" },
+                { "value": "posgrado", "label": "Posgrado" }
+              ]
+            },
+            {
+              "name": "experience",
+              "label": "Experiencia",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "Describe tu experiencia en esta materia"
+            },
+            {
+              "name": "modality",
+              "label": "Modalidad",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "presencial", "label": "Presencial" },
+                { "value": "virtual", "label": "Virtual" },
+                { "value": "ambas", "label": "Ambas" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "clases",
+          "name": "Clases",
+          "description": "Clases grupales o cursos intensivos",
+          "fields": [
+            {
+              "name": "subject",
+              "label": "Materia o tema",
+              "type": "text",
+              "required": true,
+              "placeholder": "Ej: Preparación para exámenes, curso intensivo"
+            },
+            {
+              "name": "duration",
+              "label": "Duración de la clase",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "1hora", "label": "1 hora" },
+                { "value": "2horas", "label": "2 horas" },
+                { "value": "3horas", "label": "3 horas" },
+                { "value": "medio-dia", "label": "Medio día" },
+                { "value": "dia-completo", "label": "Día completo" }
+              ]
+            },
+            {
+              "name": "maxStudents",
+              "label": "Máximo de estudiantes",
+              "type": "number",
+              "required": true,
+              "min": 1,
+              "max": 50
+            },
+            {
+              "name": "experience",
+              "label": "Experiencia del docente",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "Describe la experiencia del docente"
+            }
+          ]
+        },
+        {
+          "id": "asesoria",
+          "name": "Asesoría",
+          "description": "Consultoría académica y orientación profesional",
+          "fields": [
+            {
+              "name": "specialty",
+              "label": "Especialidad",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "orientacion-vocacional", "label": "Orientación vocacional" },
+                { "value": "eleccion-carrera", "label": "Elección de carrera" },
+                { "value": "preparacion-posgrado", "label": "Preparación para posgrado" },
+                { "value": "investigacion", "label": "Investigación académica" }
+              ]
+            },
+            {
+              "name": "experience",
+              "label": "Experiencia",
+              "type": "textarea",
+              "required": true,
+              "placeholder": "Describe tu experiencia en esta área"
+            },
+            {
+              "name": "modality",
+              "label": "Modalidad",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "presencial", "label": "Presencial" },
+                { "value": "virtual", "label": "Virtual" },
+                { "value": "ambas", "label": "Ambas" }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "productos-varios": {
+      "name": "Productos Varios",
+      "description": "Artículos diversos para estudiantes",
+      "icon": "🛍️",
+      "subcategories": [
+        {
+          "id": "material-estudio",
+          "name": "Material de Estudio",
+          "description": "Útiles escolares, libros y material académico",
+          "fields": [
+            {
+              "name": "productType",
+              "label": "Tipo de producto",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "utiles", "label": "Útiles escolares" },
+                { "value": "libros", "label": "Libros" },
+                { "value": "cuadernos", "label": "Cuadernos y blocs" },
+                { "value": "electronico", "label": "Material electrónico" }
+              ]
+            },
+            {
+              "name": "condition",
+              "label": "Estado del producto",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "nuevo", "label": "Nuevo" },
+                { "value": "usado-excelente", "label": "Usado - Excelente estado" },
+                { "value": "usado-bueno", "label": "Usado - Bueno estado" },
+                { "value": "usado-regular", "label": "Usado - Estado regular" }
+              ]
+            },
+            {
+              "name": "specifications",
+              "label": "Especificaciones",
+              "type": "textarea",
+              "placeholder": "Detalles adicionales del producto"
+            }
+          ]
+        },
+        {
+          "id": "tecnologia",
+          "name": "Tecnología",
+          "description": "Dispositivos electrónicos y accesorios",
+          "fields": [
+            {
+              "name": "deviceType",
+              "label": "Tipo de dispositivo",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "computador", "label": "Computador/Portátil" },
+                { "value": "telefono", "label": "Teléfono/Celular" },
+                { "value": "tablet", "label": "Tablet" },
+                { "value": "accesorios", "label": "Accesorios" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "name": "brand",
+              "label": "Marca",
+              "type": "text",
+              "required": true,
+              "placeholder": "Ej: Apple, Samsung, HP"
+            },
+            {
+              "name": "model",
+              "label": "Modelo",
+              "type": "text",
+              "placeholder": "Modelo específico del dispositivo"
+            },
+            {
+              "name": "condition",
+              "label": "Estado",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "nuevo", "label": "Nuevo" },
+                { "value": "usado-excelente", "label": "Usado - Excelente" },
+                { "value": "usado-bueno", "label": "Usado - Bueno" },
+                { "value": "usado-regular", "label": "Usado - Estado regular" }
+              ]
+            },
+            {
+              "name": "warranty",
+              "label": "Garantía",
+              "type": "select",
+              "options": [
+                { "value": "sin-garantia", "label": "Sin garantía" },
+                { "value": "1mes", "label": "1 mes" },
+                { "value": "3meses", "label": "3 meses" },
+                { "value": "6meses", "label": "6 meses" },
+                { "value": "1ano", "label": "1 año" }
+              ]
+            }
+          ]
+        },
+        {
+          "id": "ropa-accesorios",
+          "name": "Ropa y Accesorios",
+          "description": "Prendas de vestir y complementos",
+          "fields": [
+            {
+              "name": "clothingType",
+              "label": "Tipo de prenda/accesorio",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "camisetas", "label": "Camisetas/Blusas" },
+                { "value": "pantalones", "label": "Pantalones/Jeans" },
+                { "value": "chaquetas", "label": "Chaquetas/Sacos" },
+                { "value": "zapatos", "label": "Zapatos" },
+                { "value": "accesorios", "label": "Accesorios" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "name": "size",
+              "label": "Talla",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "xs", "label": "XS" },
+                { "value": "s", "label": "S" },
+                { "value": "m", "label": "M" },
+                { "value": "l", "label": "L" },
+                { "value": "xl", "label": "XL" },
+                { "value": "xxl", "label": "XXL" },
+                { "value": "unico", "label": "Único" }
+              ]
+            },
+            {
+              "name": "condition",
+              "label": "Estado",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "nuevo", "label": "Nuevo" },
+                { "value": "nuevo-etiquetas", "label": "Nuevo con etiquetas" },
+                { "value": "usado-excelente", "label": "Usado - Excelente" },
+                { "value": "usado-bueno", "label": "Usado - Bueno" }
+              ]
+            },
+            {
+              "name": "material",
+              "label": "Material principal",
+              "type": "text",
+              "placeholder": "Ej: Algodón, Poliéster, Cuero"
+            }
+          ]
+        }
+      ]
+    },
+    "venta-independiente": {
+      "name": "Venta Independiente",
+      "description": "Productos y servicios diversos sin categoría específica",
+      "icon": "💼",
+      "subcategories": [
+        {
+          "id": "general",
+          "name": "Venta General",
+          "description": "Productos y servicios de cualquier tipo",
+          "fields": [
+            {
+              "name": "productType",
+              "label": "Tipo de producto/servicio",
+              "type": "text",
+              "required": true,
+              "placeholder": "Describe qué vendes"
+            },
+            {
+              "name": "category",
+              "label": "Categoría general",
+              "type": "select",
+              "required": true,
+              "options": [
+                { "value": "productos", "label": "Productos físicos" },
+                { "value": "servicios", "label": "Servicios" },
+                { "value": "digital", "label": "Productos digitales" },
+                { "value": "otro", "label": "Otro" }
+              ]
+            },
+            {
+              "name": "specifications",
+              "label": "Especificaciones",
+              "type": "textarea",
+              "placeholder": "Detalles adicionales importantes"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "validationRules": {
+    "productName": {
+      "minLength": 3,
+      "maxLength": 100
+    },
+    "description": {
+      "minLength": 10,
+      "maxLength": 500
+    },
+    "price": {
+      "min": 1000,
+      "max": 1000000
+    }
+  },
+  "uiSettings": {
+    "maxProductsPerStore": 50,
+    "maxImagesPerProduct": 5,
+    "supportedImageFormats": ["jpg", "jpeg", "png", "webp"],
+    "maxImageSize": 5242880
+  }
+}

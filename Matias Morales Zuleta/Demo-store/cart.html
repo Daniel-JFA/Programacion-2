@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras - Wudhi</title>
+    <link rel="stylesheet" href="cart.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1><i class="fas fa-graduation-cap"></i> Wudhi</h1>
+            </div>
+            <nav class="nav">
+                <a href="dashboard.html" class="nav-link"><i class="fas fa-home"></i> Dashboard</a>
+                <a href="catalog.html" class="nav-link"><i class="fas fa-store"></i> Catálogo</a>
+                <a href="profile.html" class="nav-link"><i class="fas fa-user"></i> Perfil</a>
+                <a href="cart.html" class="nav-link active"><i class="fas fa-shopping-cart"></i> Carrito</a>
+            </nav>
+            <div class="cart-count" id="cartCount">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="count">0</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 class="page-title"><i class="fas fa-shopping-cart"></i> Mi Carrito de Compras</h1>
+
+        <!-- Empty Cart State -->
+        <div id="emptyCart" class="empty-cart">
+            <div class="empty-cart-icon">
+                <i class="fas fa-shopping-cart"></i>
+            </div>
+            <h2>Tu carrito está vacío</h2>
+            <p>¡Agrega algunos productos del catálogo para comenzar!</p>
+            <a href="catalog.html" class="btn-primary">
+                <i class="fas fa-store"></i> Ir al Catálogo
+            </a>
+        </div>
+
+        <!-- Cart Content -->
+        <div id="cartContent" class="cart-content">
+            <!-- Cart Items -->
+            <div class="cart-items" id="cartItems">
+                <!-- Items will be loaded here -->
+            </div>
+
+            <!-- Cart Summary -->
+            <div class="cart-summary">
+                <div class="summary-card">
+                    <h3><i class="fas fa-receipt"></i> Resumen del Pedido</h3>
+
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="subtotal">$0</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Envío:</span>
+                        <span id="shipping">$0</span>
+                    </div>
+
+                    <div class="summary-row">
+                        <span>Impuestos:</span>
+                        <span id="tax">$0</span>
+                    </div>
+
+                    <hr>
+
+                    <div class="summary-row total">
+                        <span><strong>Total:</strong></span>
+                        <span id="total"><strong>$0</strong></span>
+                    </div>
+
+                    <button class="btn-primary checkout-btn" onclick="proceedToCheckout()">
+                        <i class="fas fa-credit-card"></i> Proceder al Pago
+                    </button>
+
+                    <button class="btn-secondary" onclick="continueShopping()">
+                        <i class="fas fa-arrow-left"></i> Continuar Comprando
+                    </button>
+                </div>
+
+                <!-- Promo Code -->
+                <div class="promo-section">
+                    <h4><i class="fas fa-tag"></i> Código de Descuento</h4>
+                    <div class="promo-input">
+                        <input type="text" id="promoCode" placeholder="Ingresa código promocional">
+                        <button class="btn-secondary" onclick="applyPromoCode()">
+                            <i class="fas fa-check"></i> Aplicar
+                        </button>
+                    </div>
+                    <p class="promo-hint">Códigos válidos: ESTUDIANTE10, UNIV20</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkoutModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-credit-card"></i> Finalizar Compra</h3>
+                <button class="close-btn" onclick="closeCheckoutModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+
+            <div class="checkout-form">
+                <!-- Shipping Information -->
+                <div class="checkout-section">
+                    <h4><i class="fas fa-truck"></i> Información de Envío</h4>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shippingName">Nombre Completo</label>
+                            <input type="text" id="shippingName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shippingPhone">Teléfono</label>
+                            <input type="tel" id="shippingPhone" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="shippingAddress">Dirección</label>
+                        <input type="text" id="shippingAddress" placeholder="Dirección completa" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="shippingCity">Ciudad</label>
+                            <input type="text" id="shippingCity" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="shippingPostal">Código Postal</label>
+                            <input type="text" id="shippingPostal" required>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Payment Information -->
+                <div class="checkout-section">
+                    <h4><i class="fas fa-credit-card"></i> Información de Pago</h4>
+                    <div class="form-group">
+                        <label for="cardNumber">Número de Tarjeta</label>
+                        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="expiryDate">Fecha de Expiración</label>
+                            <input type="text" id="expiryDate" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" id="cvv" placeholder="123" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="cardName">Nombre en la Tarjeta</label>
+                        <input type="text" id="cardName" required>
+                    </div>
+                </div>
+
+                <!-- Order Summary -->
+                <div class="checkout-section">
+                    <h4><i class="fas fa-list"></i> Resumen de la Orden</h4>
+                    <div id="checkoutItems" class="checkout-items">
+                        <!-- Items will be loaded here -->
+                    </div>
+                    <div class="checkout-total">
+                        <div class="summary-row">
+                            <span>Subtotal:</span>
+                            <span id="checkoutSubtotal">$0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Envío:</span>
+                            <span id="checkoutShipping">$0</span>
+                        </div>
+                        <div class="summary-row">
+                            <span>Impuestos:</span>
+                            <span id="checkoutTax">$0</span>
+                        </div>
+                        <hr>
+                        <div class="summary-row total">
+                            <span><strong>Total:</strong></span>
+                            <span id="checkoutTotal"><strong>$0</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-primary confirm-order-btn" onclick="confirmOrder()">
+                    <i class="fas fa-check"></i> Confirmar Orden
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="cart.js"></script>
+</body>
+</html>

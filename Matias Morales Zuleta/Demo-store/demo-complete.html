@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo Completa - John & Jane en Wudhi</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .demo-complete {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+        }
+
+        .scenario-overview {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .scenario-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+
+        .character-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 2rem;
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .character-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .character-card.john {
+            border-color: #667eea;
+        }
+
+        .character-card.jane {
+            border-color: #ec4899;
+        }
+
+        .character-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .character-avatar.john {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .character-avatar.jane {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .character-role {
+            display: inline-block;
+            background: rgba(255,255,255,0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .character-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .interaction-timeline {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .timeline {
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 1rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #ec4899);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            padding-left: 2rem;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 0.5rem;
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            background: #667eea;
+        }
+
+        .timeline-item.jane::before {
+            background: #ec4899;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+
+        .timeline-item.jane .timeline-content {
+            border-left-color: #ec4899;
+        }
+
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-user {
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .timeline-item.jane .timeline-user {
+            color: #ec4899;
+        }
+
+        .timeline-time {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .demo-actions {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1.5rem 2rem;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(102, 102, 238, 0.2);
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 102, 238, 0.3);
+        }
+
+        .action-btn.jane {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .action-btn.jane:hover {
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.3);
+        }
+
+        .action-btn.secondary {
+            background: linear-gradient(135deg, #6b7280, #4b5563);
+        }
+
+        .action-btn.secondary:hover {
+            box-shadow: 0 8px 25px rgba(107, 114, 128, 0.3);
+        }
+
+        .live-demo {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .demo-tabs {
+            display: flex;
+            margin-bottom: 2rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 0.5rem;
+        }
+
+        .demo-tab {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            color: #64748b;
+        }
+
+        .demo-tab.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .demo-tab.jane.active {
+            background: #ec4899;
+        }
+
+        .demo-content {
+            display: none;
+        }
+
+        .demo-content.active {
+            display: block;
+        }
+
+        .product-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .product-card {
+            background: #f8fafc;
+            border-radius: 15px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .product-description {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .cart-summary {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-total {
+            border-top: 2px solid #bae6fd;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #0369a1;
+            text-align: center;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s ease;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #ef4444;
+            box-shadow: 0 4px 15px rgba(239, 68, 68, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-complete">
+        <header class="demo-header">
+            <h1>🎭 Demo Completa Interactiva</h1>
+            <h2>John (Vendedor) ↔ Jane (Compradora)</h2>
+            <p>Experiencia completa del marketplace universitario con datos reales</p>
+        </header>
+
+        <!-- Resumen del Escenario -->
+        <section class="scenario-overview">
+            <h2>📖 Escenario: De la Tutoría al Éxito</h2>
+            <div class="scenario-grid">
+                <div class="character-card john">
+                    <div class="character-avatar john">J</div>
+                    <h3>John Smith</h3>
+                    <div class="character-role">👨‍💼 Vendedor - Tutor Matemático</div>
+                    <p><strong>Historia:</strong> Estudiante de Ingeniería de Sistemas con 2 años de experiencia como tutor. Necesita ingresos extra para financiar sus estudios.</p>
+
+                    <div class="character-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Productos</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$100k</div>
+                            <div class="stat-label">Ventas</div>
+                        </div>
+                    </div>
+
+                    <p><strong>Meta:</strong> Ofrecer servicios de tutoría de calidad para ayudar a otros estudiantes mientras gana dinero.</p>
+                </div>
+
+                <div class="character-card jane">
+                    <div class="character-avatar jane">J</div>
+                    <h3>Jane Doe</h3>
+                    <div class="character-role">🛍️ Compradora - Estudiante de Medicina</div>
+                    <p><strong>Historia:</strong> Estudiante de 5to semestre de Medicina. Tiene dificultades con matemáticas y necesita ayuda urgente para su examen final.</p>
+
+                    <div class="character-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">2</div>
+                            <div class="stat-label">Compras</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">$63k</div>
+                            <div class="stat-label">Gastado</div>
+                        </div>
+                    </div>
+
+                    <p><strong>Meta:</strong> Aprobar su examen de cálculo con buena nota para mantener su promedio académico.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Timeline de Interacción -->
+        <section class="interaction-timeline">
+            <h2>⏰ Cronología de la Interacción</h2>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-user">👨‍💼 John</span>
+                            <span class="timeline-time">Hace 2 semanas</span>
+                        </div>
+                        <h4>Registro y Configuración</h4>
+                        <p>John se registra en Wudhi como vendedor, configura su tienda "MathMaster Academy" y publica sus servicios de tutoría.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item jane">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-user">👩 Jane</span>
+                            <span class="timeline-time">Hace 1 semana</span>
+                        </div>
+                        <h4>Registro como Compradora</h4>
+                        <p>Jane crea su cuenta de estudiante y comienza a buscar servicios de tutoría de matemáticas en el catálogo.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item jane">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-user">👩 Jane</span>
+                            <span class="timeline-time">Hace 3 días</span>
+                        </div>
+                        <h4>Descubrimiento</h4>
+                        <p>Jane encuentra la tienda de John, lee las reseñas positivas y decide contactarlo para más información.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item jane">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-user">👩 Jane</span>
+                            <span class="timeline-time">Ayer</span>
+                        </div>
+                        <h4>Compra de Servicios</h4>
+                        <p>Jane compra la tutoría de cálculo diferencial y la preparación para examen final, aplicando descuento estudiantil.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-user">👨‍💼 John</span>
+                            <span class="timeline-time">Hoy</span>
+                        </div>
+                        <h4>Servicio Programado</h4>
+                        <p>John confirma la cita de tutoría para mañana y prepara el material para la sesión con Jane.</p>
+                    </div>
+                </div>
+
+                <div class="timeline-item jane">
+                    <div class="timeline-content">
+                        <div class="timeline-header">
+                            <span class="timeline-user">👩 Jane</span>
+                            <span class="timeline-time">Mañana</span>
+                        </div>
+                        <h4>Sesión de Tutoría</h4>
+                        <p>Jane asiste a su primera sesión de tutoría con John. ¡El marketplace universitario funciona!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Acciones de Demo -->
+        <section class="demo-actions">
+            <h2>🎮 Acciones de Demo</h2>
+            <div class="action-buttons">
+                <button class="action-btn" onclick="setupDemoData()">🚀 Cargar Datos de Demo</button>
+                <button class="action-btn" onclick="startJohnJourney()">👨‍💼 Ver Viaje de John</button>
+                <button class="action-btn jane" onclick="startJaneJourney()">👩 Ver Viaje de Jane</button>
+                <button class="action-btn secondary" onclick="viewCatalog()">🛍️ Ver Catálogo Real</button>
+                <button class="action-btn secondary" onclick="resetDemo()">🔄 Reiniciar Demo</button>
+            </div>
+        </section>
+
+        <!-- Demo Interactiva en Vivo -->
+        <section class="live-demo">
+            <div class="demo-tabs">
+                <div class="demo-tab active" onclick="switchTab('john')">👨‍💼 Panel de John</div>
+                <div class="demo-tab jane" onclick="switchTab('jane')">👩 Panel de Jane</div>
+            </div>
+
+            <!-- Panel de John -->
+            <div id="johnPanel" class="demo-content active">
+                <h3>🏪 MathMaster Academy - Servicios de John</h3>
+                <div class="product-showcase" id="johnProducts">
+                    <div class="product-card">
+                        <p style="text-align: center; color: #64748b; padding: 2rem;">
+                            Haz clic en "Cargar Datos de Demo" para ver los productos de John.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel de Jane -->
+            <div id="janePanel" class="demo-content">
+                <h3>🛒 Carrito de Compras de Jane</h3>
+                <div class="cart-summary" id="janeCart">
+                    <div class="cart-item">
+                        <span style="color: #64748b; font-style: italic;">El carrito está vacío</span>
+                        <span></span>
+                    </div>
+                    <div class="cart-total">Total: $0</div>
+                </div>
+
+                <h3 style="margin-top: 2rem;">📋 Órdenes de Jane</h3>
+                <div id="janeOrders">
+                    <p style="text-align: center; color: #64748b; padding: 2rem;">
+                        Aún no hay órdenes.
+                    </p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Notificaciones -->
+    <div id="notification" class="notification"></div>
+
+    <script>
+        // Datos de demo
+        const demoData = {
+            john: {
+                user: {
+                    id: 1,
+                    name: "John Smith",
+                    email: "john.smith@universidad.edu",
+                    role: "vendedor",
+                    university: "Universidad Nacional",
+                    phone: "+57 300 123 4567",
+                    createdAt: new Date().toISOString()
+                },
+                store: {
+                    id: 1,
+                    sellerId: 1,
+                    storeName: "MathMaster Academy",
+                    storeSlug: "mathmaster-academy",
+                    category: "servicios-academicos",
+                    rating: 4.8,
+                    createdAt: new Date().toISOString()
+                },
+                products: [
+                    {
+                        id: 1,
+                        name: "Tutoría de Cálculo Diferencial",
+                        description: "Sesiones personalizadas de cálculo diferencial e integral. Ayuda con límites, derivadas, integrales definidas e indefinidas. Más de 30 estudiantes aprobados con mis métodos.",
+                        price: 25000,
+                        category: "tutoria",
+                        experience: "2 años como tutor universitario",
+                        modality: "virtual",
+                        duration: "1 hora"
+                    },
+                    {
+                        id: 2,
+                        name: "Clases de Álgebra Lineal",
+                        description: "Explicación completa de matrices, vectores, espacios vectoriales, determinantes y sistemas de ecuaciones. Incluye material complementario y ejercicios prácticos.",
+                        price: 30000,
+                        category: "clases",
+                        experience: "Profesor auxiliar en universidad",
+                        modality: "presencial",
+                        duration: "2 horas"
+                    },
+                    {
+                        id: 3,
+                        name: "Preparación para Examen Final de Matemáticas",
+                        description: "Sesiones intensivas de preparación para exámenes finales. Repaso completo de todos los temas, ejercicios prácticos, simulacros y estrategias de estudio.",
+                        price: 45000,
+                        category: "asesoria",
+                        experience: "Especialista en preparación de exámenes",
+                        modality: "ambas",
+                        duration: "Sesión completa"
+                    }
+                ]
+            },
+            jane: {
+                user: {
+                    id: 2,
+                    name: "Jane Doe",
+                    email: "jane.doe@universidad.edu",
+                    role: "comprador",
+                    university: "Universidad Nacional",
+                    phone: "+57 301 987 6543",
+                    createdAt: new Date().toISOString()
+                },
+                cart: [
+                    { ...demoData.john.products[0], quantity: 1 },
+                    { ...demoData.john.products[2], quantity: 1 }
+                ],
+                orders: [
+                    {
+                        id: 1001,
+                        items: [
+                            { ...demoData.john.products[0], quantity: 1 },
+                            { ...demoData.john.products[2], quantity: 1 }
+                        ],
+                        subtotal: 70000,
+                        discount: 7000,
+                        total: 63000,
+                        status: 'completed',
+                        createdAt: new Date().toISOString()
+                    }
+                ]
+            }
+        };
+
+        // Funciones de utilidad
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.classList.add('show');
+
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function switchTab(user) {
+            // Actualizar tabs
+            document.querySelectorAll('.demo-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.demo-content').forEach(content => {
+                content.classList.remove('active');
+            });
+
+            if (user === 'john') {
+                document.querySelector('.demo-tab:not(.jane)').classList.add('active');
+                document.getElementById('johnPanel').classList.add('active');
+            } else {
+                document.querySelector('.demo-tab.jane').classList.add('active');
+                document.getElementById('janePanel').classList.add('active');
+            }
+        }
+
+        // Configurar datos de demo
+        function setupDemoData() {
+            // Guardar datos en localStorage
+            localStorage.setItem('wudhi_user', JSON.stringify(demoData.john.user));
+            localStorage.setItem('wudhi_store', JSON.stringify(demoData.john.store));
+            localStorage.setItem('wudhi_products', JSON.stringify(demoData.john.products));
+
+            // Cambiar a usuario Jane para mostrar su perspectiva
+            localStorage.setItem('wudhi_user_jane', JSON.stringify(demoData.jane.user));
+            localStorage.setItem('wudhi_cart', JSON.stringify(demoData.jane.cart));
+            localStorage.setItem('wudhi_orders', JSON.stringify(demoData.jane.orders));
+
+            showNotification('✅ Datos de demo cargados exitosamente');
+            renderDemoContent();
+        }
+
+        // Renderizar contenido de demo
+        function renderDemoContent() {
+            // Renderizar productos de John
+            const johnProducts = demoData.john.products;
+            const johnContainer = document.getElementById('johnProducts');
+
+            johnContainer.innerHTML = johnProducts.map(product => `
+                <div class="product-card">
+                    <div class="product-header">
+                        <h4>${product.name}</h4>
+                        <div class="product-price">$${product.price.toLocaleString()}</div>
+                    </div>
+                    <div class="product-description">${product.description}</div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #64748b; margin-bottom: 1rem;">
+                        <span>📚 ${product.category}</span>
+                        <span>⏱️ ${product.duration}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem; color: #64748b;">
+                        <span>👨‍🏫 ${product.experience}</span>
+                        <span>💻 ${product.modality}</span>
+                    </div>
+                </div>
+            `).join('');
+
+            // Renderizar carrito de Jane
+            const janeCart = demoData.jane.cart;
+            const cartContainer = document.getElementById('janeCart');
+
+            if (janeCart.length === 0) {
+                cartContainer.innerHTML = `
+                    <div class="cart-item">
+                        <span style="color: #64748b; font-style: italic;">El carrito está vacío</span>
+                        <span></span>
+                    </div>
+                    <div class="cart-total">Total: $0</div>
+                `;
+            } else {
+                cartContainer.innerHTML = janeCart.map(item => `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            <small style="color: #64748b;">Cantidad: ${item.quantity}</small>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; color: #059669;">$${item.price.toLocaleString()}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                const total = janeCart.reduce((sum, item) => sum + item.price, 0);
+                const discount = total * 0.1;
+                const finalTotal = total - discount;
+
+                cartContainer.innerHTML += `
+                    <div style="padding: 1rem; background: #e0f2fe; border-radius: 8px; margin: 0.5rem 0;">
+                        <small style="color: #0369a1;">Subtotal: $${total.toLocaleString()}</small><br>
+                        <small style="color: #059669;">Descuento ESTUDIANTE10: -$${discount.toLocaleString()}</small>
+                    </div>
+                    <div class="cart-total">Total: $${finalTotal.toLocaleString()}</div>
+                `;
+            }
+
+            // Renderizar órdenes de Jane
+            const janeOrders = demoData.jane.orders;
+            const ordersContainer = document.getElementById('janeOrders');
+
+            ordersContainer.innerHTML = janeOrders.map(order => `
+                <div class="product-card">
+                    <div class="product-header">
+                        <h4>Orden #${order.id}</h4>
+                        <div style="color: #10b981; font-weight: bold;">$${order.total.toLocaleString()}</div>
+                    </div>
+                    <p><strong>Items:</strong> ${order.items.length} servicios</p>
+                    <p><strong>Estado:</strong> <span style="color: #10b981;">Completada ✓</span></p>
+                    <p><strong>Fecha:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+                    <div style="margin-top: 1rem; padding: 1rem; background: #f0fdf4; border-radius: 8px;">
+                        <p style="margin: 0; color: #166534; font-size: 0.875rem;">
+                            🎓 Descuento estudiantil aplicado<br>
+                            📅 Cita programada para mañana 3:00 PM
+                        </p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Funciones de viaje
+        function startJohnJourney() {
+            showNotification('👨‍💼 Mostrando el viaje de John como vendedor');
+            switchTab('john');
+            // Aquí podríamos agregar una animación o tour guiado
+        }
+
+        function startJaneJourney() {
+            showNotification('👩 Mostrando el viaje de Jane como compradora');
+            switchTab('jane');
+            // Aquí podríamos agregar una animación o tour guiado
+        }
+
+        function viewCatalog() {
+            window.open('catalog.html', '_blank');
+        }
+
+        function resetDemo() {
+            if (confirm('¿Estás seguro de que quieres reiniciar la demo? Se eliminarán todos los datos.')) {
+                localStorage.clear();
+                location.reload();
+            }
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            // Verificar si ya hay datos de demo
+            const existingProducts = localStorage.getItem('wudhi_products');
+            if (existingProducts) {
+                renderDemoContent();
+            }
+        });
+    </script>
+</body>
+</html>

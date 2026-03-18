@@ -1,0 +1,409 @@
+{
+  "project": {
+    "name": "Wudhi - Marketplace Universitario",
+    "version": "1.0.0",
+    "description": "Sistema completo de marketplace siguiendo arquitectura de 5 dominios",
+    "author": "Matias Morales Zuleta",
+    "repository": "https://github.com/tuusuario/wudhi",
+    "architecture": {
+      "domains": [
+        "Identity",
+        "Catalog",
+        "Commerce",
+        "Payments",
+        "Logistics"
+      ],
+      "pages": [
+        "index.html",
+        "dashboard.html",
+        "catalog.html",
+        "profile.html",
+        "cart.html"
+      ]
+    }
+  },
+  "database": {
+    "schema": {
+      "identity": {
+        "users": {
+          "fields": ["id", "name", "email", "password_hash", "phone", "status", "created_at"],
+          "constraints": ["email unique"]
+        },
+        "user_sessions": {
+          "fields": ["id", "user_id", "session_token", "ip_address", "device", "created_at", "expires_at"]
+        },
+        "addresses": {
+          "fields": ["id", "user_id", "country", "city", "street", "postal_code", "is_default"]
+        }
+      },
+      "catalog": {
+        "sellers": {
+          "fields": ["id", "owner_user_id", "rating", "created_at"]
+        },
+        "stores": {
+          "fields": ["id", "seller_id", "store_name", "store_slug", "created_at"]
+        },
+        "categories": {
+          "fields": ["id", "parent_id", "name"],
+          "hierarchical": true
+        },
+        "products": {
+          "fields": ["id", "store_id", "category_id", "name", "description", "price", "status", "created_at"]
+        },
+        "product_images": {
+          "fields": ["id", "product_id", "image_url", "position"]
+        },
+        "inventory": {
+          "fields": ["product_id", "stock", "reserved_stock", "updated_at"],
+          "pk": "product_id"
+        }
+      },
+      "commerce": {
+        "carts": {
+          "fields": ["id", "user_id", "created_at"]
+        },
+        "cart_items": {
+          "fields": ["id", "cart_id", "product_id", "quantity", "price_snapshot"]
+        },
+        "orders": {
+          "fields": ["id", "user_id", "address_id", "total_amount", "status", "created_at"]
+        },
+        "order_groups": {
+          "fields": ["id", "order_id", "store_id", "subtotal", "status"]
+        },
+        "order_items": {
+          "fields": ["id", "order_group_id", "product_id", "quantity", "price"]
+        },
+        "order_status_history": {
+          "fields": ["id", "order_id", "status", "changed_at"]
+        }
+      },
+      "payments": {
+        "payments": {
+          "fields": ["id", "order_id", "payment_method", "amount", "status", "created_at"]
+        },
+        "payment_transactions": {
+          "fields": ["id", "payment_id", "provider", "provider_reference", "status", "created_at"]
+        }
+      },
+      "logistics": {
+        "shipments": {
+          "fields": ["id", "order_group_id", "carrier", "tracking_number", "status", "shipped_at", "delivered_at"]
+        },
+        "shipment_events": {
+          "fields": ["id", "shipment_id", "status", "location", "created_at"]
+        }
+      }
+    },
+    "relationships": [
+      "user_sessions.user_id > users.id",
+      "addresses.user_id > users.id",
+      "sellers.owner_user_id > users.id",
+      "stores.seller_id > sellers.id",
+      "products.store_id > stores.id",
+      "products.category_id > categories.id",
+      "product_images.product_id > products.id",
+      "inventory.product_id > products.id",
+      "carts.user_id > users.id",
+      "cart_items.cart_id > carts.id",
+      "cart_items.product_id > products.id",
+      "orders.user_id > users.id",
+      "orders.address_id > addresses.id",
+      "order_groups.order_id > orders.id",
+      "order_groups.store_id > stores.id",
+      "order_items.order_group_id > order_groups.id",
+      "order_items.product_id > products.id",
+      "payments.order_id > orders.id",
+      "payment_transactions.payment_id > payments.id",
+      "shipments.order_group_id > order_groups.id",
+      "shipment_events.shipment_id > shipments.id"
+    ]
+  },
+  "features": {
+    "identity": {
+      "registration": {
+        "progressive": true,
+        "fields": [
+          {
+            "name": "id",
+            "label": "ID Universitario",
+            "type": "text",
+            "validation": {
+              "minLength": 3,
+              "maxLength": 20,
+              "pattern": "^[a-zA-Z0-9]+$"
+            }
+          },
+          {
+            "name": "name",
+            "label": "Nombre Completo",
+            "type": "text",
+            "validation": {
+              "minLength": 3,
+              "maxLength": 50,
+              "pattern": "^[a-záéíóúñ\\s]{3,50}$"
+            }
+          },
+          {
+            "name": "email",
+            "label": "Correo Electrónico",
+            "type": "email",
+            "validation": {
+              "pattern": "^[^\\s@]+@[^\s@]+\\.[^\\s@]+$"
+            }
+          },
+          {
+            "name": "password",
+            "label": "Contraseña",
+            "type": "password",
+            "validation": {
+              "minLength": 8,
+              "requireUppercase": true,
+              "requireNumber": true
+            }
+          },
+          {
+            "name": "role",
+            "label": "Tipo de Usuario",
+            "type": "radio",
+            "options": [
+              {"value": "comprador", "label": "Comprador", "icon": "🛍️"},
+              {"value": "vendedor", "label": "Vendedor", "icon": "📦"}
+            ]
+          }
+        ]
+      },
+      "login": {
+        "fields": ["email", "password"],
+        "options": ["rememberMe", "forgotPassword"]
+      }
+    },
+    "catalog": {
+      "categories": [
+        {"name": "Electrónica", "icon": "💻", "slug": "electronics"},
+        {"name": "Libros", "icon": "📚", "slug": "books"},
+        {"name": "Servicios", "icon": "🎓", "slug": "services"},
+        {"name": "Vivienda", "icon": "🏠", "slug": "housing"},
+        {"name": "Transporte", "icon": "🚗", "slug": "transport"},
+        {"name": "Deportes", "icon": "⚽", "slug": "sports"}
+      ],
+      "filters": ["all", "productos", "servicios", "digital"],
+      "sorting": ["relevance", "price-low", "price-high", "rating", "newest"],
+      "pagination": {
+        "itemsPerPage": 12,
+        "loadMore": true
+      }
+    },
+    "commerce": {
+      "cart": {
+        "persistent": true,
+        "maxItems": 99
+      },
+      "orders": {
+        "statuses": ["created", "paid", "shipped", "delivered", "cancelled"],
+        "groups": true
+      }
+    }
+  },
+  "styling": {
+    "colors": {
+      "primary": "#6366f1",
+      "primaryDark": "#4f46e5",
+      "primaryLight": "#818cf8",
+      "secondary": "#ec4899",
+      "success": "#10b981",
+      "error": "#ef4444",
+      "warning": "#f59e0b",
+      "grayLight": "#f3f4f6",
+      "grayMedium": "#d1d5db",
+      "grayDark": "#374151",
+      "textPrimary": "#111827",
+      "textSecondary": "#6b7280",
+      "gradient": "linear-gradient(135deg, #667eea 0%, #764ba2 100%)"
+    },
+    "typography": {
+      "fontFamily": "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+      "fontSize": {
+        "h1": "2.5rem",
+        "h2": "1.8rem",
+        "h3": "1.5rem",
+        "base": "1rem",
+        "small": "0.9rem",
+        "xs": "0.8rem"
+      }
+    },
+    "responsive": {
+      "desktop": "> 768px",
+      "tablet": "481px - 768px",
+      "mobile": "≤ 480px",
+      "containerMaxWidth": "1200px"
+    }
+  },
+  "sellerCategories": {
+    "alimentos": {
+      "name": "Alimentos",
+      "icon": "🍽️",
+      "description": "Postres, almuerzos, dulcería y más",
+      "subtypes": ["Postres", "Almuerzos", "Dulcería", "Bebidas"],
+      "fields": {
+        "foodType": {
+          "label": "Tipo de Alimento",
+          "type": "select",
+          "options": ["postres", "almuerzos", "dulceria", "bebidas", "otros"],
+          "required": true
+        },
+        "preparationTime": {
+          "label": "Tiempo de Preparación",
+          "type": "text",
+          "placeholder": "Ej: 30 minutos, 2 horas"
+        }
+      }
+    },
+    "servicios-academicos": {
+      "name": "Servicios Académicos",
+      "icon": "🎓",
+      "description": "Tutorías, asesorías y ayuda académica",
+      "subtypes": ["Tutorías", "Asesorías", "Ayuda"],
+      "fields": {
+        "serviceType": {
+          "label": "Tipo de Servicio",
+          "type": "select",
+          "options": ["tutoria", "asesoria", "clases", "ayuda-tareas", "otros"],
+          "required": true
+        },
+        "experience": {
+          "label": "Experiencia/Años",
+          "type": "text",
+          "placeholder": "Ej: 2 años, estudiante avanzado"
+        }
+      }
+    },
+    "productos-varios": {
+      "name": "Productos Varios",
+      "icon": "📦",
+      "description": "Artículos diversos para estudiantes",
+      "subtypes": ["Útiles", "Accesorios", "Otros"],
+      "fields": {
+        "condition": {
+          "label": "Condición",
+          "type": "select",
+          "options": ["nuevo", "usado-excelente", "usado-bueno", "usado-regular"],
+          "required": true
+        },
+        "brand": {
+          "label": "Marca/Modelo",
+          "type": "text",
+          "placeholder": "Ej: Dell Inspiron, Nike Air"
+        }
+      }
+    },
+    "venta-independiente": {
+      "name": "Venta Independiente",
+      "icon": "🏪",
+      "description": "Productos y servicios personalizados",
+      "subtypes": ["Personalizado", "Único", "Especial"],
+      "fields": {
+        "customCategory": {
+          "label": "Categoría Personalizada",
+          "type": "text",
+          "placeholder": "Ej: Arte, Música, Tecnología"
+        },
+        "deliveryType": {
+          "label": "Tipo de Entrega",
+          "type": "select",
+          "options": ["entrega-personal", "envio", "digital", "servicio-presencial"],
+          "required": true
+        }
+      }
+    }
+  },
+    "users": [
+      {
+        "id": 1,
+        "name": "Juan Pérez",
+        "email": "juan.perez@universidad.edu",
+        "role": "comprador",
+        "stats": {
+          "orders": 12,
+          "totalSpent": 2500000,
+          "rating": 4.8,
+          "productsSelling": 3
+        }
+      }
+    ],
+    "products": [
+      {
+        "id": 1,
+        "name": "Laptop Gaming ASUS ROG",
+        "price": 4500000,
+        "category": "electronics",
+        "type": "productos",
+        "seller": "TechStore Uni",
+        "rating": 4.8,
+        "stock": 5
+      },
+      {
+        "id": 2,
+        "name": "Clases de Matemáticas Avanzadas",
+        "price": 35000,
+        "category": "services",
+        "type": "servicios",
+        "seller": "TutorPro",
+        "rating": 5.0,
+        "stock": 999
+      }
+    ]
+  },
+  "api": {
+    "baseUrl": "http://localhost:3000/api",
+    "endpoints": {
+      "auth": {
+        "register": "/auth/register",
+        "login": "/auth/login",
+        "forgotPassword": "/auth/forgot-password",
+        "resetPassword": "/auth/reset-password"
+      },
+      "users": {
+        "profile": "/users/profile",
+        "update": "/users/update"
+      },
+      "products": {
+        "list": "/products",
+        "detail": "/products/:id",
+        "create": "/products",
+        "update": "/products/:id"
+      },
+      "cart": {
+        "get": "/cart",
+        "add": "/cart/items",
+        "remove": "/cart/items/:id",
+        "update": "/cart/items/:id"
+      },
+      "orders": {
+        "create": "/orders",
+        "list": "/orders",
+        "detail": "/orders/:id"
+      }
+    }
+  },
+  "messages": {
+    "success": {
+      "registration": "¡Bienvenido! Tu cuenta ha sido creada exitosamente.",
+      "login": "¡Bienvenido! Has iniciado sesión correctamente.",
+      "passwordRecovery": "Instrucciones de recuperación enviadas a tu correo.",
+      "addToCart": "Producto agregado al carrito",
+      "orderCreated": "Orden creada exitosamente"
+    },
+    "errors": {
+      "invalidID": "El ID debe tener entre 3 y 20 caracteres",
+      "invalidName": "Ingresa un nombre válido (solo letras y espacios)",
+      "invalidEmail": "Ingresa un correo electrónico válido",
+      "weakPassword": "La contraseña no cumple los requisitos",
+      "roleRequired": "Selecciona un rol",
+      "emptyFields": "Por favor completa todos los campos",
+      "invalidCredentials": "Correo o contraseña incorrectos",
+      "productNotFound": "Producto no encontrado",
+      "outOfStock": "Producto agotado"
+    }
+  }
+}

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Wudhi Marketplace</title>
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>Wudhi</h1>
+            </div>
+            <nav class="nav">
+                <a href="#" class="nav-link active">Inicio</a>
+                <a href="#" class="nav-link">Productos</a>
+                <a href="#" class="nav-link">Mis Órdenes</a>
+                <a href="#" class="nav-link">Perfil</a>
+            </nav>
+            <div class="user-menu">
+                <div class="user-info">
+                    <span class="user-name">Juan Pérez</span>
+                    <span class="user-role">Comprador</span>
+                </div>
+                <button class="logout-btn">Salir</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <h2>¡Bienvenido de vuelta, Juan!</h2>
+            <p>¿Qué deseas hacer hoy en Wudhi?</p>
+        </section>
+
+        <!-- Quick Actions -->
+        <section class="quick-actions">
+            <div class="action-card">
+                <div class="action-icon">🛍️</div>
+                <h3>Comprar</h3>
+                <p>Explora productos de tus compañeros</p>
+                <button class="action-btn primary">Ver Catálogo</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">📦</div>
+                <h3>Vender</h3>
+                <p>Publica tus productos o servicios</p>
+                <button class="action-btn secondary">Crear Producto</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">📋</div>
+                <h3>Mis Órdenes</h3>
+                <p>Revisa tus compras y ventas</p>
+                <button class="action-btn tertiary">Ver Órdenes</button>
+            </div>
+            <div class="action-card">
+                <div class="action-icon">⚙️</div>
+                <h3>Configuración</h3>
+                <p>Administra tu cuenta</p>
+                <button class="action-btn quaternary">Mi Perfil</button>
+            </div>
+        </section>
+
+        <!-- Recent Activity -->
+        <section class="recent-activity">
+            <h3>Actividad Reciente</h3>
+            <div class="activity-list">
+                <div class="activity-item">
+                    <div class="activity-icon">🛒</div>
+                    <div class="activity-content">
+                        <p><strong>Compraste:</strong> Laptop Dell Inspiron</p>
+                        <span class="activity-time">Hace 2 horas</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">💰</div>
+                    <div class="activity-content">
+                        <p><strong>Pago confirmado:</strong> Orden #12345</p>
+                        <span class="activity-time">Hace 1 día</span>
+                    </div>
+                </div>
+                <div class="activity-item">
+                    <div class="activity-icon">⭐</div>
+                    <div class="activity-content">
+                        <p><strong>Calificación recibida:</strong> 5 estrellas por "Servicio excelente"</p>
+                        <span class="activity-time">Hace 3 días</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Cards -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number">12</div>
+                <div class="stat-label">Órdenes Realizadas</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">$2.5M</div>
+                <div class="stat-label">Total Comprado</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">4.8</div>
+                <div class="stat-label">Calificación Promedio</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">3</div>
+                <div class="stat-label">Productos en Venta</div>
+            </div>
+        </section>
+
+        <!-- Recommended Products -->
+        <section class="recommended-section">
+            <h3>Productos Recomendados</h3>
+            <div class="products-grid">
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/200x150/6366f1/ffffff?text=Laptop" alt="Laptop">
+                    </div>
+                    <div class="product-info">
+                        <h4>Laptop Gaming ASUS</h4>
+                        <p class="product-price">$2,500,000</p>
+                        <p class="product-seller">Tienda Tech</p>
+                        <div class="product-rating">⭐⭐⭐⭐⭐ (4.9)</div>
+                    </div>
+                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/200x150/ec4899/ffffff?text=Libro" alt="Libro">
+                    </div>
+                    <div class="product-info">
+                        <h4>Libro de Programación</h4>
+                        <p class="product-price">$45,000</p>
+                        <p class="product-seller">Librería Uni</p>
+                        <div class="product-rating">⭐⭐⭐⭐⭐ (4.7)</div>
+                    </div>
+                    <button class="add-to-cart-btn">Agregar al Carrito</button>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://via.placeholder.com/200x150/10b981/ffffff?text=Servicio" alt="Servicio">
+                    </div>
+                    <div class="product-info">
+                        <h4>Clases de Matemáticas</h4>
+                        <p class="product-price">$30,000/hora</p>
+                        <p class="product-seller">Tutorías Pro</p>
+                        <div class="product-rating">⭐⭐⭐⭐⭐ (5.0)</div>
+                    </div>
+                    <button class="add-to-cart-btn">Contactar</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>&copy; 2026 Wudhi - Marketplace Universitario</p>
+            <div class="footer-links">
+                <a href="#">Términos</a>
+                <a href="#">Privacidad</a>
+                <a href="#">Ayuda</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="dashboard.js"></script>
+</body>
+</html>

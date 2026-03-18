@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulación - John (Vendedor) ↔ Jane (Compradora)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .simulation-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .simulation-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .users-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .user-profile {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            border-top: 5px solid #667eea;
+        }
+
+        .user-profile.jane {
+            border-top-color: #ec4899;
+        }
+
+        .user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .user-avatar.john {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .user-avatar.jane {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .user-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-card {
+            background: #f8fafc;
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+            border: 1px solid #e2e8f0;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: #64748b;
+            margin-top: 0.25rem;
+        }
+
+        .interaction-flow {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .flow-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .flow-step {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            position: relative;
+        }
+
+        .flow-step.jane-step {
+            border-left-color: #ec4899;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #667eea;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.875rem;
+        }
+
+        .flow-step.jane-step .step-number {
+            background: #ec4899;
+        }
+
+        .simulation-controls {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .control-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .control-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 102, 238, 0.3);
+        }
+
+        .control-btn.jane-btn {
+            background: linear-gradient(135deg, #ec4899, #f97316);
+        }
+
+        .control-btn.jane-btn:hover {
+            box-shadow: 0 5px 15px rgba(236, 72, 153, 0.3);
+        }
+
+        .simulation-log {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .log-entries {
+            max-height: 400px;
+            overflow-y: auto;
+            background: #f8fafc;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+
+        .log-entry {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
+            border-left: 3px solid #667eea;
+            background: white;
+        }
+
+        .log-entry.jane {
+            border-left-color: #ec4899;
+        }
+
+        .log-timestamp {
+            font-size: 0.75rem;
+            color: #64748b;
+            margin-bottom: 0.25rem;
+        }
+
+        .log-message {
+            font-size: 0.875rem;
+            color: #1e293b;
+        }
+
+        .products-showcase {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .product-card {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .product-description {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        .cart-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .cart-items {
+            margin-top: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+
+        .cart-total {
+            border-top: 2px solid #e2e8f0;
+            padding-top: 1rem;
+            margin-top: 1rem;
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #059669;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e2e8f0;
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .progress-fill.jane {
+            background: linear-gradient(90deg, #ec4899, #f97316);
+        }
+    </style>
+</head>
+<body>
+    <div class="simulation-container">
+        <header class="simulation-header">
+            <h1>🎭 Simulación de Interacción</h1>
+            <h2>John (Vendedor) ↔ Jane (Compradora)</h2>
+            <p>Proceso completo de publicación y compra de productos en Wudhi</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="simulationProgress"></div>
+            </div>
+        </header>
+
+        <!-- Perfiles de Usuario -->
+        <section class="users-section">
+            <div class="user-profile john">
+                <div class="user-avatar john">J</div>
+                <h3>John Smith</h3>
+                <p class="user-role">👨‍💼 Vendedor - Servicios Académicos</p>
+
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="johnProducts">0</div>
+                        <div class="stat-label">Productos</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="johnSales">$0</div>
+                        <div class="stat-label">Ventas</div>
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <p><strong>Universidad:</strong> Universidad Nacional</p>
+                    <p><strong>Carrera:</strong> Ingeniería de Sistemas</p>
+                    <p><strong>Experiencia:</strong> 2 años como tutor</p>
+                </div>
+            </div>
+
+            <div class="user-profile jane">
+                <div class="user-avatar jane">J</div>
+                <h3>Jane Doe</h3>
+                <p class="user-role">🛍️ Compradora - Estudiante</p>
+
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="janeOrders">0</div>
+                        <div class="stat-label">Órdenes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="janeSpent">$0</div>
+                        <div class="stat-label">Gastado</div>
+                    </div>
+                </div>
+
+                <div class="user-info">
+                    <p><strong>Universidad:</strong> Universidad Nacional</p>
+                    <p><strong>Carrera:</strong> Medicina</p>
+                    <p><strong>Semestre:</strong> 5to semestre</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flujo de Interacción -->
+        <section class="interaction-flow">
+            <h2>🔄 Flujo de Interacción</h2>
+            <div class="flow-steps">
+                <div class="flow-step">
+                    <div class="step-number">1</div>
+                    <h4>John se registra como vendedor</h4>
+                    <p>Completa el proceso de registro y onboarding de vendedor</p>
+                </div>
+                <div class="flow-step">
+                    <div class="step-number">2</div>
+                    <h4>John configura su tienda</h4>
+                    <p>Selecciona categoría "Servicios Académicos" y agrega productos</p>
+                </div>
+                <div class="flow-step jane-step">
+                    <div class="step-number">3</div>
+                    <h4>Jane se registra como compradora</h4>
+                    <p>Jane crea su cuenta de estudiante compradora</p>
+                </div>
+                <div class="flow-step jane-step">
+                    <div class="step-number">4</div>
+                    <h4>Jane navega el catálogo</h4>
+                    <p>Jane descubre los productos de John en el catálogo</p>
+                </div>
+                <div class="flow-step jane-step">
+                    <div class="step-number">5</div>
+                    <h4>Jane agrega al carrito</h4>
+                    <p>Jane selecciona productos y los agrega al carrito</p>
+                </div>
+                <div class="flow-step jane-step">
+                    <div class="step-number">6</div>
+                    <h4>Jane completa la compra</h4>
+                    <p>Jane finaliza la orden y paga por los servicios</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Controles de Simulación -->
+        <section class="simulation-controls">
+            <h2>🎮 Controles de Simulación</h2>
+            <div class="control-buttons">
+                <button class="control-btn" onclick="startSimulation()">🚀 Iniciar Simulación Completa</button>
+                <button class="control-btn" onclick="simulateJohnRegistration()">👨‍💼 John se registra</button>
+                <button class="control-btn" onclick="simulateJohnStoreSetup()">🏪 John configura tienda</button>
+                <button class="control-btn jane-btn" onclick="simulateJaneRegistration()">👩 Jane se registra</button>
+                <button class="control-btn jane-btn" onclick="simulateJaneBrowsing()">🛍️ Jane navega catálogo</button>
+                <button class="control-btn jane-btn" onclick="simulateJanePurchase()">💳 Jane compra productos</button>
+                <button class="control-btn" onclick="resetSimulation()">🔄 Reiniciar Simulación</button>
+            </div>
+        </section>
+
+        <!-- Productos de John -->
+        <section class="products-showcase">
+            <h2>📦 Productos de John</h2>
+            <div class="products-grid" id="johnsProducts">
+                <div class="product-card">
+                    <p style="text-align: center; color: #64748b; padding: 2rem;">
+                        John aún no ha publicado productos.<br>
+                        Haz clic en "John configura tienda" para comenzar.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carrito de Jane -->
+        <section class="cart-summary">
+            <h2>🛒 Carrito de Compras de Jane</h2>
+            <div class="cart-items" id="janeCart">
+                <div class="cart-item">
+                    <span style="color: #64748b; font-style: italic;">El carrito está vacío</span>
+                    <span></span>
+                </div>
+            </div>
+            <div class="cart-total" id="cartTotal">
+                Total: $0
+            </div>
+        </section>
+
+        <!-- Log de Simulación -->
+        <section class="simulation-log">
+            <h2>📋 Log de Simulación</h2>
+            <div class="log-entries" id="simulationLog">
+                <div class="log-entry">
+                    <div class="log-timestamp">00:00:00</div>
+                    <div class="log-message">🟢 Simulación iniciada - Esperando acciones...</div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Estado de la simulación
+        let simulationState = {
+            john: {
+                registered: false,
+                storeSetup: false,
+                products: []
+            },
+            jane: {
+                registered: false,
+                cart: [],
+                orders: []
+            },
+            currentStep: 0,
+            log: []
+        };
+
+        // Datos de productos de John
+        const johnProducts = [
+            {
+                id: 1,
+                name: "Tutoría de Cálculo Diferencial",
+                description: "Sesiones personalizadas de cálculo diferencial e integral. Ayuda con límites, derivadas, integrales definidas e indefinidas. Más de 30 estudiantes aprobados.",
+                price: 25000,
+                category: "tutoria",
+                experience: "2 años como tutor universitario",
+                modality: "virtual",
+                duration: "1 hora"
+            },
+            {
+                id: 2,
+                name: "Clases de Álgebra Lineal",
+                description: "Explicación completa de matrices, vectores, espacios vectoriales, determinantes y sistemas de ecuaciones. Material incluido.",
+                price: 30000,
+                category: "clases",
+                experience: "Profesor auxiliar en universidad",
+                modality: "presencial",
+                duration: "2 horas"
+            },
+            {
+                id: 3,
+                name: "Preparación para Examen Final de Matemáticas",
+                description: "Sesiones intensivas de preparación para exámenes finales. Repaso de todos los temas, ejercicios prácticos y simulacros.",
+                price: 45000,
+                category: "asesoria",
+                experience: "Especialista en preparación de exámenes",
+                modality: "ambas",
+                duration: "Sesión completa"
+            }
+        ];
+
+        // Funciones de utilidad
+        function addLog(message, user = 'system') {
+            const timestamp = new Date().toLocaleTimeString();
+            const logEntry = {
+                timestamp,
+                message,
+                user
+            };
+
+            simulationState.log.unshift(logEntry);
+
+            const logContainer = document.getElementById('simulationLog');
+            const logEntryElement = document.createElement('div');
+            logEntryElement.className = `log-entry ${user === 'jane' ? 'jane' : ''}`;
+
+            logEntryElement.innerHTML = `
+                <div class="log-timestamp">${timestamp}</div>
+                <div class="log-message">${message}</div>
+            `;
+
+            logContainer.insertBefore(logEntryElement, logContainer.firstChild);
+
+            // Limitar a 50 entradas
+            while (logContainer.children.length > 50) {
+                logContainer.removeChild(logContainer.lastChild);
+            }
+        }
+
+        function updateProgress(step) {
+            simulationState.currentStep = step;
+            const progress = (step / 6) * 100;
+            document.getElementById('simulationProgress').style.width = progress + '%';
+        }
+
+        function updateStats() {
+            document.getElementById('johnProducts').textContent = simulationState.john.products.length;
+            document.getElementById('johnSales').textContent = '$' + (simulationState.john.products.length * 25000).toLocaleString();
+
+            document.getElementById('janeOrders').textContent = simulationState.jane.orders.length;
+            const totalSpent = simulationState.jane.cart.reduce((sum, item) => sum + item.price, 0);
+            document.getElementById('janeSpent').textContent = '$' + totalSpent.toLocaleString();
+        }
+
+        // Simulación de registro de John
+        function simulateJohnRegistration() {
+            if (simulationState.john.registered) {
+                addLog('⚠️ John ya está registrado', 'john');
+                return;
+            }
+
+            simulationState.john.registered = true;
+            addLog('✅ John completó su registro como vendedor', 'john');
+            addLog('📧 Email: john.smith@universidad.edu', 'john');
+            addLog('🎓 Universidad: Universidad Nacional', 'john');
+            addLog('👨‍💼 Rol: Vendedor', 'john');
+
+            updateProgress(1);
+            updateStats();
+        }
+
+        // Simulación de configuración de tienda de John
+        function simulateJohnStoreSetup() {
+            if (!simulationState.john.registered) {
+                addLog('❌ John debe registrarse primero', 'system');
+                return;
+            }
+
+            if (simulationState.john.storeSetup) {
+                addLog('⚠️ La tienda de John ya está configurada', 'john');
+                return;
+            }
+
+            simulationState.john.storeSetup = true;
+            simulationState.john.products = [...johnProducts];
+
+            addLog('🏪 John configuró su tienda "MathMaster"', 'john');
+            addLog('📚 Categoría: Servicios Académicos', 'john');
+            addLog('📦 Agregó 3 productos/servicios a su catálogo', 'john');
+
+            updateProgress(2);
+            updateStats();
+            renderJohnProducts();
+        }
+
+        // Simulación de registro de Jane
+        function simulateJaneRegistration() {
+            if (simulationState.jane.registered) {
+                addLog('⚠️ Jane ya está registrada', 'jane');
+                return;
+            }
+
+            simulationState.jane.registered = true;
+            addLog('✅ Jane completó su registro como compradora', 'jane');
+            addLog('📧 Email: jane.doe@universidad.edu', 'jane');
+            addLog('🎓 Universidad: Universidad Nacional', 'jane');
+            addLog('🛍️ Rol: Compradora', 'jane');
+
+            updateProgress(3);
+            updateStats();
+        }
+
+        // Simulación de navegación de Jane
+        function simulateJaneBrowsing() {
+            if (!simulationState.jane.registered) {
+                addLog('❌ Jane debe registrarse primero', 'jane');
+                return;
+            }
+
+            if (!simulationState.john.storeSetup) {
+                addLog('❌ John aún no ha configurado su tienda', 'jane');
+                return;
+            }
+
+            addLog('🔍 Jane está navegando el catálogo', 'jane');
+            addLog('📚 Jane encontró la tienda de John "MathMaster"', 'jane');
+            addLog('⭐ Jane vio las reseñas positivas (4.8/5)', 'jane');
+            addLog('💡 Jane está interesada en los servicios de tutoría', 'jane');
+
+            updateProgress(4);
+        }
+
+        // Simulación de compra de Jane
+        function simulateJanePurchase() {
+            if (!simulationState.jane.registered || !simulationState.john.storeSetup) {
+                addLog('❌ Ambos usuarios deben estar registrados y John debe tener productos', 'system');
+                return;
+            }
+
+            // Jane agrega productos al carrito
+            simulationState.jane.cart = [
+                { ...johnProducts[0], quantity: 1 },
+                { ...johnProducts[2], quantity: 1 }
+            ];
+
+            addLog('🛒 Jane agregó "Tutoría de Cálculo Diferencial" al carrito', 'jane');
+            addLog('🛒 Jane agregó "Preparación para Examen Final" al carrito', 'jane');
+            addLog('💰 Subtotal: $70.000 COP', 'jane');
+
+            // Aplicar descuento de estudiante
+            const subtotal = 70000;
+            const discount = subtotal * 0.1; // 10% descuento estudiante
+            const total = subtotal - discount;
+
+            addLog('🎓 Jane aplicó código promocional ESTUDIANTE10 (-$7.000)', 'jane');
+            addLog('💳 Total a pagar: $63.000 COP', 'jane');
+
+            // Completar orden
+            const order = {
+                id: Date.now(),
+                items: simulationState.jane.cart,
+                subtotal: subtotal,
+                discount: discount,
+                total: total,
+                status: 'completed',
+                createdAt: new Date().toISOString()
+            };
+
+            simulationState.jane.orders.push(order);
+            simulationState.jane.cart = [];
+
+            addLog('✅ Jane completó el pago exitosamente', 'jane');
+            addLog('📧 Jane recibió confirmación por email', 'jane');
+            addLog('📅 Cita programada para mañana a las 3:00 PM', 'jane');
+
+            updateProgress(6);
+            updateStats();
+            renderJaneCart();
+        }
+
+        // Simulación completa
+        function startSimulation() {
+            resetSimulation();
+
+            setTimeout(() => simulateJohnRegistration(), 1000);
+            setTimeout(() => simulateJohnStoreSetup(), 3000);
+            setTimeout(() => simulateJaneRegistration(), 5000);
+            setTimeout(() => simulateJaneBrowsing(), 7000);
+            setTimeout(() => simulateJanePurchase(), 9000);
+        }
+
+        // Reiniciar simulación
+        function resetSimulation() {
+            simulationState = {
+                john: {
+                    registered: false,
+                    storeSetup: false,
+                    products: []
+                },
+                jane: {
+                    registered: false,
+                    cart: [],
+                    orders: []
+                },
+                currentStep: 0,
+                log: []
+            };
+
+            document.getElementById('simulationLog').innerHTML = `
+                <div class="log-entry">
+                    <div class="log-timestamp">00:00:00</div>
+                    <div class="log-message">🟢 Simulación reiniciada - Esperando acciones...</div>
+                </div>
+            `;
+
+            document.getElementById('simulationProgress').style.width = '0%';
+            updateStats();
+            renderJohnProducts();
+            renderJaneCart();
+        }
+
+        // Renderizar productos de John
+        function renderJohnProducts() {
+            const container = document.getElementById('johnsProducts');
+
+            if (simulationState.john.products.length === 0) {
+                container.innerHTML = `
+                    <div class="product-card">
+                        <p style="text-align: center; color: #64748b; padding: 2rem;">
+                            John aún no ha publicado productos.<br>
+                            Haz clic en "John configura tienda" para comenzar.
+                        </p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = simulationState.john.products.map(product => `
+                <div class="product-card">
+                    <div class="product-header">
+                        <h4>${product.name}</h4>
+                        <div class="product-price">$${product.price.toLocaleString()}</div>
+                    </div>
+                    <div class="product-description">${product.description}</div>
+                    <div class="product-meta">
+                        <span>📚 ${product.category}</span>
+                        <span>⏱️ ${product.duration}</span>
+                    </div>
+                    <div class="product-meta">
+                        <span>👨‍🏫 ${product.experience}</span>
+                        <span>💻 ${product.modality}</span>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Renderizar carrito de Jane
+        function renderJaneCart() {
+            const container = document.getElementById('janeCart');
+            const totalElement = document.getElementById('cartTotal');
+
+            if (simulationState.jane.cart.length === 0) {
+                container.innerHTML = `
+                    <div class="cart-item">
+                        <span style="color: #64748b; font-style: italic;">El carrito está vacío</span>
+                        <span></span>
+                    </div>
+                `;
+                totalElement.textContent = 'Total: $0';
+                return;
+            }
+
+            container.innerHTML = simulationState.jane.cart.map(item => `
+                <div class="cart-item">
+                    <div>
+                        <strong>${item.name}</strong><br>
+                        <small style="color: #64748b;">Cantidad: ${item.quantity}</small>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: #059669;">$${item.price.toLocaleString()}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            const total = simulationState.jane.cart.reduce((sum, item) => sum + item.price, 0);
+            totalElement.textContent = `Total: $${total.toLocaleString()}`;
+        }
+
+        // Inicializar
+        document.addEventListener('DOMContentLoaded', () => {
+            renderJohnProducts();
+            renderJaneCart();
+            addLog('🎭 Simulación de interacción John ↔ Jane iniciada', 'system');
+        });
+    </script>
+</body>
+</html>

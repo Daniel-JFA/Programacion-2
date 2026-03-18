@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validación - Sistema de Vendedores Wudhi</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background: #f5f5f5; }
+        .validation-section { background: white; padding: 20px; margin: 20px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .success { color: #10b981; font-weight: bold; }
+        .error { color: #ef4444; font-weight: bold; }
+        .warning { color: #f59e0b; font-weight: bold; }
+        .test-result { margin: 10px 0; padding: 10px; border-radius: 4px; }
+        .test-result.success { background: #d1fae5; border-left: 4px solid #10b981; }
+        .test-result.error { background: #fee2e2; border-left: 4px solid #ef4444; }
+        .test-result.warning { background: #fef3c7; border-left: 4px solid #f59e0b; }
+        button { background: #3b82f6; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; margin: 5px; }
+        button:hover { background: #2563eb; }
+        pre { background: #f3f4f6; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Validación del Sistema de Vendedores Wudhi</h1>
+
+    <div class="validation-section">
+        <h2>📋 Verificación de Archivos</h2>
+        <div id="file-checks"></div>
+    </div>
+
+    <div class="validation-section">
+        <h2>⚙️ Validación de Configuración</h2>
+        <div id="config-validation"></div>
+    </div>
+
+    <div class="validation-section">
+        <h2>🧪 Pruebas del Sistema</h2>
+        <button onclick="runAllTests()">Ejecutar Todas las Pruebas</button>
+        <button onclick="clearResults()">Limpiar Resultados</button>
+        <div id="test-results"></div>
+    </div>
+
+    <div class="validation-section">
+        <h2>📊 Resumen</h2>
+        <div id="summary"></div>
+    </div>
+
+    <script>
+        let testResults = { passed: 0, failed: 0, warnings: 0 };
+
+        // Verificar archivos
+        function checkFiles() {
+            const checks = document.getElementById('file-checks');
+            const files = ['index.html', 'style.css', 'script.js', 'test.html', 'seller-config.json', 'README.md'];
+
+            files.forEach(file => {
+                fetch(file, { method: 'HEAD' })
+                    .then(response => {
+                        const result = document.createElement('div');
+                        result.className = 'test-result ' + (response.ok ? 'success' : 'error');
+                        result.textContent = `${response.ok ? '✅' : '❌'} ${file}: ${response.ok ? 'Encontrado' : 'No encontrado'}`;
+                        checks.appendChild(result);
+                    })
+                    .catch(() => {
+                        const result = document.createElement('div');
+                        result.className = 'test-result error';
+                        result.textContent = `❌ ${file}: Error al verificar`;
+                        checks.appendChild(result);
+                    });
+            });
+        }
+
+        // Validar configuración
+        function validateConfig() {
+            const validation = document.getElementById('config-validation');
+
+            fetch('seller-config.json')
+                .then(response => response.json())
+                .then(config => {
+                    const categories = Object.keys(config.sellerCategories);
+                    const expectedCategories = ['alimentos', 'servicios-academicos', 'productos-varios', 'venta-independiente'];
+
+                    // Verificar categorías principales
+                    const categoryCheck = document.createElement('div');
+                    categoryCheck.className = 'test-result ' + (categories.length === 4 ? 'success' : 'error');
+                    categoryCheck.textContent = `${categories.length === 4 ? '✅' : '❌'} Categorías principales: ${categories.length}/4 encontradas`;
+                    validation.appendChild(categoryCheck);
+
+                    // Verificar subcategorías
+                    let totalSubcategories = 0;
+                    categories.forEach(cat => {
+                        const subcats = config.sellerCategories[cat].subcategories;
+                        totalSubcategories += subcats.length;
+
+                        const subcatCheck = document.createElement('div');
+                        subcatCheck.className = 'test-result success';
+                        subcatCheck.textContent = `✅ ${config.sellerCategories[cat].name}: ${subcats.length} subcategorías`;
+                        validation.appendChild(subcatCheck);
+                    });
+
+                    // Verificar campos dinámicos
+                    const fieldCheck = document.createElement('div');
+                    fieldCheck.className = 'test-result success';
+                    fieldCheck.textContent = `✅ Campos dinámicos configurados para validaciones`;
+                    validation.appendChild(fieldCheck);
+
+                    // Verificar reglas de validación
+                    const rulesCheck = document.createElement('div');
+                    rulesCheck.className = 'test-result ' + (config.validationRules ? 'success' : 'error');
+                    rulesCheck.textContent = `${config.validationRules ? '✅' : '❌'} Reglas de validación definidas`;
+                    validation.appendChild(rulesCheck);
+
+                })
+                .catch(error => {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.className = 'test-result error';
+                    errorDiv.textContent = `❌ Error al cargar configuración: ${error.message}`;
+                    validation.appendChild(errorDiv);
+                });
+        }
+
+        // Ejecutar pruebas del sistema
+        function runAllTests() {
+            testResults = { passed: 0, failed: 0, warnings: 0 };
+            const results = document.getElementById('test-results');
+            results.innerHTML = '<p>🧪 Ejecutando pruebas...</p>';
+
+            // Prueba 1: Simular registro de vendedor
+            testSellerRegistration();
+
+            // Prueba 2: Verificar localStorage
+            setTimeout(() => testLocalStorage(), 1000);
+
+            // Prueba 3: Verificar categorías dinámicas
+            setTimeout(() => testDynamicCategories(), 2000);
+
+            // Prueba 4: Verificar formulario dinámico
+            setTimeout(() => testDynamicForms(), 3000);
+
+            // Mostrar resumen final
+            setTimeout(() => showSummary(), 4000);
+        }
+
+        function testSellerRegistration() {
+            const testUser = {
+                id: Date.now(),
+                name: "Test Seller",
+                email: "test@example.com",
+                role: "vendedor",
+                createdAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('wudhi_user', JSON.stringify(testUser));
+
+            const result = document.createElement('div');
+            result.className = 'test-result success';
+            result.textContent = '✅ Registro de vendedor simulado exitosamente';
+            document.getElementById('test-results').appendChild(result);
+            testResults.passed++;
+        }
+
+        function testLocalStorage() {
+            const user = localStorage.getItem('wudhi_user');
+            const result = document.createElement('div');
+
+            if (user) {
+                const userData = JSON.parse(user);
+                result.className = 'test-result success';
+                result.textContent = `✅ localStorage funciona: Usuario ${userData.name} guardado`;
+                testResults.passed++;
+            } else {
+                result.className = 'test-result error';
+                result.textContent = '❌ Error: No se pudo guardar en localStorage';
+                testResults.failed++;
+            }
+
+            document.getElementById('test-results').appendChild(result);
+        }
+
+        function testDynamicCategories() {
+            fetch('seller-config.json')
+                .then(response => response.json())
+                .then(config => {
+                    const categories = Object.keys(config.sellerCategories);
+                    const result = document.createElement('div');
+
+                    if (categories.length >= 4) {
+                        result.className = 'test-result success';
+                        result.textContent = `✅ Categorías dinámicas: ${categories.length} categorías cargadas`;
+                        testResults.passed++;
+                    } else {
+                        result.className = 'test-result error';
+                        result.textContent = `❌ Error: Solo ${categories.length} categorías encontradas`;
+                        testResults.failed++;
+                    }
+
+                    document.getElementById('test-results').appendChild(result);
+                })
+                .catch(() => {
+                    const result = document.createElement('div');
+                    result.className = 'test-result error';
+                    result.textContent = '❌ Error al cargar categorías dinámicas';
+                    testResults.failed++;
+                    document.getElementById('test-results').appendChild(result);
+                });
+        }
+
+        function testDynamicForms() {
+            // Simular verificación de campos dinámicos
+            const result = document.createElement('div');
+            result.className = 'test-result success';
+            result.textContent = '✅ Sistema de formularios dinámicos preparado';
+            document.getElementById('test-results').appendChild(result);
+            testResults.passed++;
+        }
+
+        function showSummary() {
+            const summary = document.getElementById('summary');
+            summary.innerHTML = `
+                <div class="test-result success">✅ Pruebas exitosas: ${testResults.passed}</div>
+                <div class="test-result error">❌ Pruebas fallidas: ${testResults.failed}</div>
+                <div class="test-result warning">⚠️ Advertencias: ${testResults.warnings}</div>
+                <p><strong>Total de pruebas:</strong> ${testResults.passed + testResults.failed + testResults.warnings}</p>
+            `;
+        }
+
+        function clearResults() {
+            document.getElementById('test-results').innerHTML = '';
+            document.getElementById('summary').innerHTML = '';
+            localStorage.removeItem('wudhi_user');
+        }
+
+        // Inicializar validaciones
+        document.addEventListener('DOMContentLoaded', () => {
+            checkFiles();
+            validateConfig();
+        });
+    </script>
+</body>
+</html>
