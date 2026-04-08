@@ -1,13 +1,98 @@
+:root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --accent: #1f7a8c;
+    --accent-hover: #186170;
+    --text: #1c2a33;
+    --muted: #687781;
+    --border: #d9e2e8;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(180deg, #edf4f7 0%, var(--bg) 100%);
+    color: var(--text);
+}
+
+.container {
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+h1 {
+    margin: 0 0 18px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 18px rgba(20, 40, 55, 0.08);
+}
+
+.card + .card {
+    margin-top: 16px;
+}
+
+form {
+    display: grid;
+    gap: 10px;
+}
+
+label {
+    font-weight: 600;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 15px;
+}
+
+input:focus {
+    outline: 2px solid rgba(31, 122, 140, 0.25);
+    border-color: var(--accent);
+}
+
 .button {
-    background-color: #52d156;
+    background-color: var(--accent);
     border: none;
     color: white;
-    padding: 15px 32px;
+    padding: 12px 18px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin-top: 8px;
     cursor: pointer;
-    border-radius: 23px;
+    border-radius: 10px;
+    transition: background-color 0.2s ease;
+}
+
+.button:hover {
+    background-color: var(--accent-hover);
+}
+
+p {
+    margin: 8px 0;
+}
+
+#resultado h3 {
+    margin: 16px 0 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+.note {
+    color: var(--muted);
 }
