@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analítico - Guardian</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- CDN Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- Chart.js para visualización -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+    <main class="container section">
+        <h1 class="title has-text-centered has-text-link-dark mb-6">🛡️ The Data Center Guardian - Dashboard</h1>
+
+        <section class="box">
+            <h2 class="subtitle has-text-weight-bold">Configuración de Datos Sintéticos</h2>
+            <form id="configForm">
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="numRegistros">Cantidad de Registros (N)</label>
+                            <div class="control">
+                                <input class="input" id="numRegistros" type="number" min="1" required value="50">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="seedValue">Seed (Semilla)</label>
+                            <div class="control">
+                                <input class="input" id="seedValue" type="number" required value="42">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field is-grouped mt-4">
+                    <div class="control">
+                        <button type="button" id="btnGenerar" class="button is-link">Generar Datos</button>
+                    </div>
+                    <div class="control">
+                        <button type="button" id="btnAnalizar" class="button is-link is-light" disabled>Analizar y Visualizar</button>
+                    </div>
+                </div>
+            </form>
+            <p id="statusMensaje" class="help is-info mt-3 has-text-weight-medium"></p>
+        </section>
+
+        <section id="panelMetricas" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">📊 Métricas Globales</h2>
+            <div class="columns is-multiline">
+                <div class="column is-one-third-tablet is-one-sixth-desktop">
+                    <div class="box has-background-light has-text-centered">
+                        <p class="heading">Total Registros</p>
+                        <p class="title is-4" id="metTotal">0</p>
+                    </div>
+                </div>
+                <div class="column is-one-third-tablet is-one-sixth-desktop">
+                    <div class="box has-background-light has-text-centered">
+                        <p class="heading">Estado OK</p>
+                        <p class="title is-4 has-text-success" id="metOk">0</p>
+                    </div>
+                </div>
+                <div class="column is-one-third-tablet is-one-sixth-desktop">
+                    <div class="box has-background-light has-text-centered">
+                        <p class="heading">Advertencia</p>
+                        <p class="title is-4 has-text-warning-dark" id="metAdv">0</p>
+                    </div>
+                </div>
+                <div class="column is-one-third-tablet is-one-sixth-desktop">
+                    <div class="box has-background-light has-text-centered">
+                        <p class="heading">Crítico</p>
+                        <p class="title is-4 has-text-danger" id="metCrit">0</p>
+                    </div>
+                </div>
+                <div class="column is-one-third-tablet is-one-sixth-desktop">
+                    <div class="box has-background-light has-text-centered">
+                        <p class="heading">Temp. Promedio</p>
+                        <p class="title is-4" id="metTempProm">0 °C</p>
+                    </div>
+                </div>
+                <div class="column is-one-third-tablet is-one-sixth-desktop">
+                    <div class="box has-background-light has-text-centered">
+                        <p class="heading">Max. Energía</p>
+                        <p class="title is-4" id="metMaxEnergia">0 W</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="panelGraficos" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">📈 Visualización de Datos</h2>
+            <div class="columns">
+                <div class="column is-half">
+                    <canvas id="chartEstados"></canvas>
+                </div>
+                <div class="column is-half">
+                    <canvas id="chartTempCpu"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="panelReporte" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">📋 Reporte de Servidores</h2>
+            <div class="table-container">
+                <table class="table is-striped is-hoverable is-fullwidth" id="tablaReporte">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>CPU (%)</th>
+                            <th>Temp (°C)</th>
+                            <th>Energía (W)</th>
+                            <th>Estado</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Llenado dinámicamente vía JS -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
