@@ -1,5 +1,7 @@
 const form = document.getElementById("monitorForm");
 const resultado = document.getElementById("resultado");
+const loadingPanel = document.getElementById("loadingPanel");
+const submitBtn = document.getElementById("submitBtn");
 
 const outId = document.getElementById("outId");
 const outCpu = document.getElementById("outCpu");
@@ -10,9 +12,55 @@ const controlEnergia = document.getElementById("controlEnergia");
 const estadoServidor = document.getElementById("estadoServidor");
 const capacidadReserva = document.getElementById("capacidadReserva");
 
+function construirReporte(cpu, temperatura, energia) {
+    let mensajeEnergia = "Consumo de energia dentro del rango permitido.";
+
+    if (energia > 400) {
+        const exceso = energia - 400;
+        mensajeEnergia = `Exceso de energia: ${exceso.toFixed(2)} W por encima del limite permitido.`;
+    }
+
+    let mensajeEstado = "[ESTADO]: Operacion normal.";
+
+    if (temperatura > 75 && cpu > 80) {
+        mensajeEstado = "[PELIGRO CRITICO]: Apagado de emergencia inminente.";
+    } else if (temperatura > 75 || cpu > 80) {
+        mensajeEstado = "[ADVERTENCIA]: Rendimiento comprometido.";
+    }
+
+    let mensajeCapacidad = "El servidor aun tiene capacidad disponible.";
+
+    if (cpu >= 90) {
+        const capacidadRestante = 100 - cpu;
+        const procesosAdicionales = Math.floor(capacidadRestante / 2);
+        mensajeCapacidad = `Puede recibir ${procesosAdicionales} procesos adicionales antes de colapsar.`;
+    }
+
+    return {
+        mensajeEnergia,
+        mensajeEstado,
+        mensajeCapacidad
+    };
+}
+
+function esperar(ms) {
+    return new Promise(function (resolve) {
+        setTimeout(resolve, ms);
+    });
+}
+
+function pintarSalida(data) {
+    outId.textContent = data.idServidor;
+    outCpu.textContent = `${data.cpu.toFixed(2)} %`;
+    outTemp.textContent = `${data.temperatura.toFixed(2)} C`;
+    outEnergia.textContent = `${data.energia.toFixed(2)} W`;
+    controlEnergia.textContent = data.mensajeEnergia;
+    estadoServidor.textContent = data.mensajeEstado;
+    capacidadReserva.textContent = data.mensajeCapacidad;
+}
 
 
-form.addEventListener("submit", function (event) {
+form.addEventListener("submit", async function (event) {
     event.preventDefault();
 
     const idServidor = document.getElementById("idServidor").value.trim();
@@ -26,39 +74,33 @@ form.addEventListener("submit", function (event) {
     }
 
     if ([cpu, temperatura, energia].some(Number.isNaN)) {
-        alert("Verifica que CPU, temperatura y energía sean valores numéricos.");
+        alert("Verifica que CPU, temperatura y energia sean valores numericos.");
         return;
     }
-    
-    outId.textContent = idServidor;
-    outCpu.textContent = `${cpu.toFixed(2)} %`;
-    outTemp.textContent = `${temperatura.toFixed(2)} °C`;
-    outEnergia.textContent = `${energia.toFixed(2)} W`;
 
-    if (energia > 400) {
-        const exceso = energia - 400;
-        controlEnergia.textContent = `Exceso de energía: ${exceso.toFixed(2)} W por encima del límite permitido.`;
-    } else {
-        controlEnergia.textContent = "Consumo de energía dentro del rango permitido.";
-    }
+    const reporte = construirReporte(cpu, temperatura, energia);
 
-    console.log(energia);
-    
-    if (temperatura > 75 && cpu > 80) {
-        estadoServidor.textContent = "[PELIGRO CRÍTICO]: Apagado de emergencia inminente.";
-    } else if (temperatura > 75 || cpu > 80) {
-        estadoServidor.textContent = "[ADVERTENCIA]: Rendimiento comprometido.";
-    } else {
-        estadoServidor.textContent = "[ESTADO]: Operación normal.";
-    }
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Procesando...";
 
-    if (cpu >= 90) {
-        const capacidadRestante = 100 - cpu;
-        const procesosAdicionales = Math.floor(capacidadRestante / 2);
-        capacidadReserva.textContent = `Puede recibir ${procesosAdicionales} procesos adicionales antes de colapsar.`;
-    } else {
-        capacidadReserva.textContent = "El servidor aún tiene capacidad disponible.";
-    }
+    resultado.classList.add("hidden");
+    loadingPanel.classList.remove("hidden");
 
+    await esperar(3000);
+
+    pintarSalida({
+        idServidor,
+        cpu,
+        temperatura,
+        energia,
+        mensajeEnergia: reporte.mensajeEnergia,
+        mensajeEstado: reporte.mensajeEstado,
+        mensajeCapacidad: reporte.mensajeCapacidad
+    });
+
+    loadingPanel.classList.add("hidden");
     resultado.classList.remove("hidden");
+
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Generar Reporte";
 });
