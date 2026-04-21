@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Analítico - Guardian</title>
+    <!-- CDN Bulma CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <!-- Estilos personalizados (cargados después de Bulma para poder sobreescribir) -->
+    <link rel="stylesheet" href="styles.css">
+    <!-- Chart.js para visualización -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+
+<body>
+    <!-- START NAVBAR -->
+    <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#panelInsercion">
+                <span class="icon-text">
+                    <span class="icon">🛡️</span>
+                    <span class="has-text-weight-bold">Data Center Guardian</span>
+                </span>
+            </a>
+    
+            <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarGuardian">
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+                <span aria-hidden="true"></span>
+            </a>
+        </div>
+    
+        <div id="navbarGuardian" class="navbar-menu">
+            <div class="navbar-start">
+                <a class="navbar-item" href="#panelMetricas">📊 Métricas</a>
+                <a class="navbar-item" href="#panelGraficos">📈 Gráficos</a>
+                <a class="navbar-item" href="#panelReporte">📋 Reporte</a>
+            </div>
+
+            <div class="navbar-end">
+                <div class="navbar-item">
+                    <div class="control">
+                        <button id="darkModeToggle" class="button is-dark">
+                            <span class="icon">
+                                <i class="fas fa-moon"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <!-- END NAVBAR -->
+
+    <main class="container section">
+        <section id="panelInsercion" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">➕ Agregar Nuevo Servidor</h2>
+            <form id="formAgregarServidor">
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="serverId">ID del Servidor</label>
+                            <div class="control">
+                                <input class="input" id="serverId" type="text" placeholder="Ej: SRV-DC3-51" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="serverCpu">CPU (%)</label>
+                            <div class="control">
+                                <input class="input" id="serverCpu" type="number" step="0.01" min="0" max="100" placeholder="Ej: 75.5" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="columns">
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="serverTemp">Temperatura (°C)</label>
+                            <div class="control">
+                                <input class="input" id="serverTemp" type="number" step="0.01" min="0" placeholder="Ej: 82.1" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column">
+                        <div class="field">
+                            <label class="label" for="serverEnergy">Energía (W)</label>
+                            <div class="control">
+                                <input class="input" id="serverEnergy" type="number" step="0.01" min="0" placeholder="Ej: 450.7" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <div class="control">
+                        <button type="submit" id="btnAgregarServidor" class="button is-link">
+                            Guardar Servidor
+                        </button>
+                    </div>
+                </div>
+            </form>
+            <p id="statusMensaje" class="help is-info mt-3 has-text-weight-medium"></p>
+        </section>
+
+        <section id="panelMetricas" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">📊 Métricas Globales</h2>
+            <nav class="panel">
+                <p class="panel-heading">
+                    Resumen del Sistema
+                </p>
+                <a class="panel-block is-clickable" data-filter="TODOS">
+                    <span class="panel-icon"><i class="fas fa-server" aria-hidden="true"></i></span>
+                    Total de Servidores
+                    <strong class="ml-auto" id="metTotal">0</strong>
+                </a>
+                <a class="panel-block is-clickable" data-filter="OK">
+                    <span class="panel-icon"><i class="fas fa-check-circle has-text-success" aria-hidden="true"></i></span>
+                    Estado OK
+                    <strong class="ml-auto has-text-success" id="metOk">0</strong>
+                </a>
+                <a class="panel-block is-clickable" data-filter="ADVERTENCIA">
+                    <span class="panel-icon"><i class="fas fa-exclamation-triangle has-text-warning-dark" aria-hidden="true"></i></span>
+                    Advertencias
+                    <strong class="ml-auto has-text-warning-dark" id="metAdv">0</strong>
+                </a>
+                <a class="panel-block is-clickable" data-filter="CRITICO">
+                    <span class="panel-icon"><i class="fas fa-times-circle has-text-danger" aria-hidden="true"></i></span>
+                    Críticos
+                    <strong class="ml-auto has-text-danger" id="metCrit">0</strong>
+                </a>
+                <a class="panel-block"> <!-- No es clicable -->
+                    <span class="panel-icon"><i class="fas fa-thermometer-half" aria-hidden="true"></i></span>
+                    Temperatura Promedio
+                    <strong class="ml-auto" id="metTempProm">0 °C</strong>
+                </a>
+                <a class="panel-block"> <!-- No es clicable -->
+                    <span class="panel-icon"><i class="fas fa-bolt" aria-hidden="true"></i></span>
+                    Máximo Consumo de Energía
+                    <strong class="ml-auto" id="metMaxEnergia">0 W</strong>
+                </a>
+            </nav>
+        </section>
+
+        <section id="panelGraficos" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">📈 Visualización de Datos</h2>
+            <div class="columns">
+                <div class="column is-half">
+                    <canvas id="chartEstados"></canvas>
+                </div>
+                <div class="column is-half">
+                    <canvas id="chartTempCpu"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <section id="panelReporte" class="box is-hidden">
+            <h2 class="subtitle has-text-weight-bold">📋 Reporte de Servidores</h2>
+            <nav class="panel">
+                <p class="panel-heading">
+                    Listado de Servidores
+                </p>
+                <div class="panel-tabs" id="reporteFiltros">
+                    <a class="is-active" data-filter="TODOS">Todos</a>
+                    <a data-filter="OK">OK</a>
+                    <a data-filter="ADVERTENCIA">Advertencia</a>
+                    <a data-filter="CRITICO">Crítico</a>
+                </div>
+                <div id="listaServidores">
+                    <!-- Los servidores se insertarán aquí dinámicamente -->
+                </div>
+            </nav>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+    <!-- Script para el menú hamburguesa de Bulma en móviles -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+            if ($navbarBurgers.length > 0) {
+                $navbarBurgers.forEach(el => {
+                    el.addEventListener('click', () => {
+                        const target = el.dataset.target;
+                        const $target = document.getElementById(target);
+                        el.classList.toggle('is-active');
+                        $target.classList.toggle('is-active');
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
