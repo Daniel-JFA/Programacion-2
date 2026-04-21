@@ -4,6 +4,7 @@ Task 3 — Dashboard Analítico con HTML, CSS y JavaScript
 
 Esta entrega evalúa la evolución del Guardian hacia una aplicación web con:
 
+Generar landing page donde se explique el proyecto
 Generación de datos sintéticos
 Analítica básica
 Visualización en entorno web

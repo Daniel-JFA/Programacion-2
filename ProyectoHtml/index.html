@@ -4,14 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoreo de Servidor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.2/css/halfmoon.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
     <main class="container">
         <h1>Sistema de Monitoreo</h1>
+        <p class="note">Panel web para diagnóstico rápido de CPU, temperatura y energía.</p>
 
-        <form id="monitorForm" class="card">
+        <form id="monitorForm" class="card form-card">
             <h2>Ingreso de Datos</h2>
 
             <label for="idServidor">ID del Servidor</label>
@@ -26,10 +28,26 @@
             <label for="energia">Consumo de Energía (W)</label>
             <input id="energia" type="number" min="0" step="0.01" required>
 
-            <button type="submit" class="button">Generar Reporte</button>
+            <button id="submitBtn" type="submit" class="button">Generar Reporte</button>
         </form>
 
-        <section id="resultado" class="card hidden" aria-live="polite">
+        <section id="loadingPanel" class="card loading-card hidden" aria-live="polite">
+            <h2>Procesando telemetría</h2>
+            <p class="note">Validando señales y calculando umbrales operativos...</p>
+
+            <div class="loading-track" role="presentation">
+                <span class="scan-beam"></span>
+            </div>
+
+            <div class="loading-grid" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+
+        <section id="resultado" class="card result-card hidden" aria-live="polite">
             <h2>Reporte del Sistema de Monitoreo</h2>
 
             <p><strong>ID del Servidor:</strong> <span id="outId"></span></p>
