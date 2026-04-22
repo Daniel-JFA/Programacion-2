@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monitoreo de Servidor</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.2/css/halfmoon.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <main class="container">
+        <nav class="top-nav card">
+            <a href="index.html">Inicio</a>
+            <a href="monitoreo.html" aria-current="page">Monitoreo</a>
+            <a href="informes.html">Informes</a>
+        </nav>
+
+        <h1>Sistema de Monitoreo</h1>
+        <p class="note">Panel web para diagnóstico rápido de CPU, temperatura y energía.</p>
+
+        <form id="monitorForm" class="card form-card">
+            <h2>Ingreso de Datos</h2>
+
+            <label for="operadorMedicion">Usuario que realiza la medición</label>
+            <select id="operadorMedicion" required>
+                <option value="">Cargando usuarios...</option>
+            </select>
+
+            <label for="estadoRegistro">Estado del registro</label>
+            <select id="estadoRegistro" required>
+                <option value="Activo" selected>Activo</option>
+                <option value="Inactivo">Inactivo</option>
+            </select>
+
+            <label for="idServidor">ID del Servidor</label>
+            <input id="idServidor" type="text" required>
+
+            <label for="cpu">Carga de CPU (%)</label>
+            <input id="cpu" type="number" min="0" max="100" step="0.01" required>
+
+            <label for="temperatura">Temperatura del Rack (°C)</label>
+            <input id="temperatura" type="number" step="0.01" required>
+
+            <label for="energia">Consumo de Energía (W)</label>
+            <input id="energia" type="number" min="0" step="0.01" required>
+
+            <button id="submitBtn" type="submit" class="button">Generar Reporte</button>
+        </form>
+
+        <section id="loadingPanel" class="card loading-card hidden" aria-live="polite">
+            <h2>Procesando telemetría</h2>
+            <p class="note">Validando señales y calculando umbrales operativos...</p>
+
+            <div class="loading-track" role="presentation">
+                <span class="scan-beam"></span>
+            </div>
+
+            <div class="loading-grid" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </section>
+
+        <section id="resultado" class="card result-card hidden" aria-live="polite">
+            <h2>Reporte del Sistema de Monitoreo</h2>
+
+            <p><strong>ID del Servidor:</strong> <span id="outId"></span></p>
+            <p><strong>Usuario que realiza la medición:</strong> <span id="outOperador"></span></p>
+            <p><strong>Estado del Registro:</strong> <span id="outEstado"></span></p>
+            <p><strong>Carga de CPU:</strong> <span id="outCpu"></span></p>
+            <p><strong>Temperatura del Rack:</strong> <span id="outTemp"></span></p>
+            <p><strong>Consumo de Energía:</strong> <span id="outEnergia"></span></p>
+
+            <hr>
+
+            <h3>Control de Energía</h3>
+            <p id="controlEnergia"></p>
+
+            <h3>Estado del Servidor</h3>
+            <p id="estadoServidor"></p>
+
+            <h3>Capacidad de Reserva</h3>
+            <p id="capacidadReserva"></p>
+        </section>
+    </main>
+
+    <script src="main.js"></script>
+</body>
+</html>
