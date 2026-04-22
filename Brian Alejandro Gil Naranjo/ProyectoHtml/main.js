@@ -1,3 +1,11 @@
+// --- Configuración de Supabase ---
+// Las variables ahora se cargan desde config.js, que es generado por el build script.
+const SUPABASE_URL = window.env.SUPABASE_URL;
+const SUPABASE_ANON_KEY = window.env.SUPABASE_ANON_KEY;
+
+// Corregido: Renombramos la variable del cliente para no entrar en conflicto con el objeto global 'supabase' del CDN.
+const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 // Variables Globales
 let datosGenerados = [];
 let datosAnalizadosGlobal = []; // Almacena los datos analizados para poder filtrarlos sin recalcular
@@ -16,7 +24,7 @@ const btnAgregarServidor = document.getElementById('btnAgregarServidor');
  * toda la interfaz de usuario (métricas, gráficos y reportes).
  */
 async function cargarYRenderizarDatos() {
-    statusMensaje.textContent = "Cargando y analizando datos desde la base de datos...";
+    statusMensaje.textContent = "Cargando y analizando datos desde Supabase...";
     try {
         const datosDesdeAPI = await obtenerDatosDesdeAPI();
         
@@ -57,7 +65,7 @@ async function cargarYRenderizarDatos() {
         document.getElementById("panelReporte").classList.add("is-hidden");
 
     } catch (error) {
-        statusMensaje.textContent = `Error: ${error.message}. Asegúrate de que el servidor (server.js) esté corriendo.`;
+        statusMensaje.textContent = `Error: ${error.message}. Revisa la configuración de Supabase y tu conexión a internet.`;
         alert(`Error al cargar los datos: ${error.message}. Revisa la consola para más detalles.`);
     }
 }
@@ -78,29 +86,20 @@ formAgregarServidor.addEventListener('submit', async (event) => {
     };
 
     try {
-        const response = await fetch('http://localhost:3000/api/servers', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(nuevoServidor),
-        });
+        const { data, error } = await supabaseClient
+            .from('servers')
+            .insert([nuevoServidor]) // Supabase espera un array de objetos
+            .select(); // .select() devuelve el registro insertado
 
-        if (!response.ok) {
-            // Mejora en el manejo de errores: Verificamos si la respuesta es JSON o texto/HTML.
-            const contentType = response.headers.get("content-type");
-            let errorText;
-            if (contentType && contentType.indexOf("application/json") !== -1) {
-                const errorData = await response.json();
-                errorText = errorData.error || `Error HTTP ${response.status}`;
-            } else {
-                // Si no es JSON, es probablemente una página de error HTML de Express.
-                errorText = `El servidor respondió con un error inesperado (Status: ${response.status}). Revisa la consola del navegador (F12 -> Pestaña 'Network' o 'Consola') para ver la respuesta completa del servidor.`;
-                console.error("Respuesta no JSON recibida del servidor:", await response.text());
+        if (error) {
+            // Manejar errores específicos de Supabase, como claves duplicadas
+            if (error.code === '23505') { // Código de violación de unicidad en PostgreSQL
+                throw new Error(`El ID de servidor '${nuevoServidor.server_id}' ya existe.`);
             }
-            throw new Error(errorText);
+            throw error; // Lanza otros errores
         }
 
-        const result = await response.json();
-        statusMensaje.textContent = result.message;
+        statusMensaje.textContent = `Servidor '${data[0].server_id}' agregado exitosamente.`;
         
         formAgregarServidor.reset(); // Limpia el formulario
         await cargarYRenderizarDatos(); // Recarga y renderiza todos los datos
@@ -119,24 +118,20 @@ formAgregarServidor.addEventListener('submit', async (event) => {
  * Obtiene los datos de los servidores desde nuestra API de Node.js.
  */
 async function obtenerDatosDesdeAPI() {
-    const url = 'http://localhost:3000/api/servers'; // URL del backend de Node.js
+    const { data, error } = await supabaseClient
+        .from('servers')
+        .select('*')
+        .order('created_at', { ascending: false }); // Opcional: ordenar por más reciente
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(`Error HTTP: ${response.status}`);
-        }
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error("Falló la obtención de datos desde la API:", error);
-        // Relanzamos el error para que el controlador del evento lo capture
-        throw new Error("No se pudo conectar con el servidor de la base de datos");
+    if (error) {
+        console.error("Falló la obtención de datos desde Supabase:", error);
+        // Relanzamos el error para que el controlador del evento lo capture.
+        throw new Error(error.message);
     }
+
+    return data;
 }
 
-// La función generarDatosSinteticos y mulberry32 ya no son necesarias,
-// pero las dejamos por si quieres volver a usarlas en el futuro.
 
 function evaluarServidor(servidor) {
     const { cpu, temperatura, energia } = servidor;

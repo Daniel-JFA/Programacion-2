@@ -55,3 +55,22 @@ Transformar el dashboard de un prototipo frontend a una **aplicación web full-s
     *   Se añadió un sutil efecto `hover` a los paneles en modo oscuro para mejorar la retroalimentación visual.
 *   **Calidad del Proyecto:**
     *   Se creó un archivo `.gitignore` para excluir la carpeta `node_modules` y otros archivos generados del control de versiones, siguiendo las buenas prácticas de desarrollo.
+
+---
+## 🚀 Sprint Review: Evolución a Serverless - 22 de Mayo de 2024
+
+## 🎯 Objetivo del Sprint
+Modernizar la arquitectura del proyecto, migrando de una pila full-stack tradicional (Node.js + MySQL) a una arquitectura serverless utilizando **Supabase** como backend. El objetivo era simplificar el desarrollo, eliminar la necesidad de un servidor propio y facilitar el despliegue.
+
+## 🛠️ Cambios Implementados
+
+### 6️⃣ Migración a Arquitectura Serverless con Supabase
+*   **Antes:** El proyecto utilizaba una arquitectura cliente-servidor con un backend personalizado en **Node.js/Express** y una base de datos **MySQL** local (gestionada con XAMPP). Esto requería mantener un proceso de servidor activo durante el desarrollo y complicaba el despliegue.
+*   **Ahora:** 
+    *   Se ha **eliminado por completo el backend de Node.js** (`server.js`) y sus dependencias (`node_modules`, `package.json`).
+    *   La base de datos y la API RESTful son ahora proporcionadas automáticamente por **Supabase**.
+    *   El frontend se comunica directamente con la API de Supabase a través de su librería cliente (`@supabase/supabase-js`), simplificando las peticiones de datos.
+*   **Análisis Riguroso:** Este cambio representa una modernización fundamental del stack tecnológico.
+    *   **Simplificación Radical:** Se elimina toda la complejidad de gestionar un servidor, conexiones a bases de datos y la creación de endpoints de API. El código del proyecto se reduce, enfocándose únicamente en la lógica del frontend.
+    *   **Despliegue Instantáneo:** Al ser ahora una aplicación 100% frontend (JAMstack), puede ser desplegada de forma gratuita y casi instantánea en servicios como Vercel, Netlify o GitHub Pages.
+    *   **Escalabilidad y Mantenimiento:** Se delega la escalabilidad, seguridad y mantenimiento de la base de datos a la plataforma de Supabase, permitiendo al desarrollador centrarse en las funcionalidades de la aplicación.

@@ -15,3 +15,7 @@
 
 # Archivos de sistema operativo
 .DS_Store
+
+# Archivos de configuración generados
+# Este archivo contiene secretos y es generado en el servidor de despliegue.
+ProyectoHtml/config.js
