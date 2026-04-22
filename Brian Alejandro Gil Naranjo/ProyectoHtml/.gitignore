@@ -1,0 +1,17 @@
+# Archivo para ignorar archivos y carpetas en Git
+
+# Dependencias de Node.js
+# Ignora la carpeta node_modules que está dentro de la carpeta 'backend'
+/backend/node_modules/
+
+# Bases de datos generadas
+# Ignora cualquier archivo de base de datos de SQLite que se pueda generar
+/backend/*.db
+/backend/*.db-journal
+
+# Archivos de entorno
+# Es una buena práctica ignorar archivos que contengan contraseñas o claves de API
+.env
+
+# Archivos de sistema operativo
+.DS_Store
