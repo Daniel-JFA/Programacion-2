@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Informes Históricos</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/halfmoon@2.0.2/css/halfmoon.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <main class="container report-shell">
+        <nav class="top-nav card">
+            <a href="index.html">Inicio</a>
+            <a href="monitoreo.html">Monitoreo</a>
+            <a href="informes.html" aria-current="page">Informes</a>
+        </nav>
+
+        <header class="card">
+            <h1>Informe Histórico de Mediciones</h1>
+            <p class="note">Consulta todo el histórico capturado, aplica filtros y revisa el comportamiento operativo.</p>
+        </header>
+
+        <section class="card report-filters">
+            <h2>Filtros</h2>
+            <div class="filter-grid">
+                <label>
+                    Servidor
+                    <input id="filtroServidor" type="text" placeholder="Ej: SRV-01">
+                </label>
+                <label>
+                    Operador
+                    <input id="filtroOperador" type="text" placeholder="Nombre del operador">
+                </label>
+                <label>
+                    Estado
+                    <select id="filtroEstado">
+                        <option value="">Todos</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </label>
+            </div>
+            <p id="resumenRegistros" class="note"></p>
+        </section>
+
+        <section class="card report-table-card">
+            <div class="table-wrap">
+                <table class="report-table" id="tablaMediciones">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Servidor</th>
+                            <th>Operador</th>
+                            <th>Estado</th>
+                            <th>CPU (%)</th>
+                            <th>Temperatura (°C)</th>
+                            <th>Energía (W)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaBody"></tbody>
+                </table>
+            </div>
+            <p id="emptyState" class="note hidden">No hay registros para los filtros aplicados.</p>
+        </section>
+    </main>
+
+    <script src="informes.js"></script>
+</body>
+</html>

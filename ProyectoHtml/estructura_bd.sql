@@ -1,0 +1,41 @@
+CREATE DATABASE IF NOT EXISTS Dev_2
+  CHARACTER SET utf8mb4
+  COLLATE utf8mb4_unicode_ci;
+
+USE Dev_2;
+
+CREATE TABLE IF NOT EXISTS operadores (
+  id_operador INT AUTO_INCREMENT PRIMARY KEY,
+  nombre VARCHAR(120) NOT NULL,
+  estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS servidores (
+  id_servidor VARCHAR(50) PRIMARY KEY,
+  descripcion VARCHAR(150) NULL,
+  estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS mediciones (
+  id_medicion BIGINT AUTO_INCREMENT PRIMARY KEY,
+  id_servidor VARCHAR(50) NOT NULL,
+  id_operador INT NOT NULL,
+  cpu DECIMAL(5,2) NOT NULL,
+  temperatura DECIMAL(5,2) NOT NULL,
+  energia DECIMAL(10,2) NOT NULL,
+  estado ENUM('Activo', 'Inactivo') NOT NULL DEFAULT 'Activo',
+  fecha_medicion TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  observaciones VARCHAR(255) NULL,
+  CONSTRAINT fk_mediciones_servidores
+    FOREIGN KEY (id_servidor) REFERENCES servidores(id_servidor)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT,
+  CONSTRAINT fk_mediciones_operadores
+    FOREIGN KEY (id_operador) REFERENCES operadores(id_operador)
+    ON UPDATE CASCADE
+    ON DELETE RESTRICT
+) ENGINE=InnoDB;
