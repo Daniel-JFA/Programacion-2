@@ -1,0 +1,67 @@
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #f4f7fb; /* Modo claro por defecto */
+    color: #4a4a4a;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Estilo para alinear los valores de las métricas a la derecha dentro del panel */
+.panel-block strong.ml-auto {
+    margin-left: auto;
+    padding-left: 1em; /* Espacio para que no se pegue al texto */
+}
+
+/* --- Estilos para Modo Oscuro --- */
+html.dark-mode {
+    background-color: #1e1e1e;
+}
+
+html.dark-mode body {
+    background-color: transparent; /* Hace que el body sea transparente para mostrar el fondo del html */
+    color: #f5f5f5;
+}
+
+html.dark-mode .box,
+html.dark-mode .panel {
+    background-color: #2d2d2d;
+    color: #f5f5f5;
+    border-color: #4a4a4a;
+}
+
+html.dark-mode .panel-block {
+    color: #f5f5f5; /* Asegura que el texto del panel-block sea claro en modo oscuro */
+}
+
+/* Efecto hover para los paneles clicables en modo oscuro */
+html.dark-mode a.panel-block:hover {
+    background-color: #3c3c3c;
+}
+
+html.dark-mode .title,
+html.dark-mode .subtitle,
+html.dark-mode .label {
+    color: #f5f5f5;
+}
+
+html.dark-mode .input {
+    background-color: #4a4a4a;
+    border-color: #696969;
+    color: #f5f5f5;
+}
+
+html.dark-mode .input::placeholder {
+    color: #999; /* Un gris más sutil para el placeholder */
+}
+
+html.dark-mode .panel-heading {
+    background-color: #1a1a1a;
+    color: #f5f5f5;
+}
+
+html.dark-mode .panel-tabs a.is-active {
+    border-bottom-color: #f5f5f5;
+    color: #f5f5f5;
+}
